@@ -57,7 +57,7 @@ const DropdownMenuDemo = () => {
               </span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-white text-black dark:bg-black dark:text-white border-none">
+          <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -158,11 +158,11 @@ const DropdownMenuDemo = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outlined" className="rounded-full bg-white">
+        <Button variant="outlined" className="rounded-full bg-white dark:bg-slate-800 dark:text-slate-200">
           <MenuIcon />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-white">
+      <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none">
         <DropdownMenuLabel>
           <h1>Deadbeta</h1>
           <p className="font-light">Help to connect people</p>

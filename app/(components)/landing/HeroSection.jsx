@@ -1,31 +1,36 @@
+"use client"
 import Image from "next/image";
-import Earth3d from "./earth/Earth3d";
+// import Clock from "./clock/Clock";
+// import Earth3d from "./earth/Earth3d";
+// import EarthDark3d from "./earthDark/EarthDark3d";
+// import City3d from "./city/City3d";
+import From from "./From";
+import { useState, Suspense } from 'react'
+import { Canvas } from "@react-three/fiber";
+import { Environment, OrbitControls } from "@react-three/drei";
+import Earth_new from './earth1/Earth_new'
+
 
 const HeroSection = () => {
   return (
     <div className="flex flex-col sm:flex-row mt-16  justify-evenly">
       <div className="w-full h-[calc((100vh-16px)/2)] sm:h-[calc(100vh-16px)] sm:w-1/2 flex flex-col justify-center items-center">
-        <div>
-          <Image
-            src="/images/classic-car2.svg"
-            alt="car"
-            width={2000}
-            height={2000}
-            className="h-32 w-48"
-          />
-        </div>
-        <div className="-mt-9">
-          <h1 className=" text-black dark:text-slate-200 text-4xl sm:text-5xl lg:text-6xl font-extrabold">
-            Dead Beta
-          </h1>
-          <p className="text-center">Help to connect people</p>
-        </div>
+          <From/>
       </div>
-      {/* <Human3d /> */}
-      {/* <Clock /> */}
-      <Earth3d />
-      {/* <EarthDark3d /> */}
-      {/* <City3d /> */}
+      {/* <Earth3d /> */}
+      <div className="w-full h-[calc((100vh-16px)/2)] sm:h-[calc(100vh-16px)] sm:w-1/2 flex flex-col justify-center items-center">
+      <Canvas className="h-100">
+      {/* <ambientLight intensity={1.5}/> */}
+      <ambientLight/>
+      <OrbitControls autoRotate enableZoom={false} />
+        <Suspense fallback={null}>
+          <Earth_new  />
+
+        </Suspense>
+        <Environment preset="sunset"/>
+
+      </Canvas>
+      </div>
     </div>
   );
 };

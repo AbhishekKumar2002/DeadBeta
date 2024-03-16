@@ -15,7 +15,7 @@ import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 import SearchBar from "./SearchBar";
 import SearchresultList from "./SearchresultList";
-import  DropdownMenuDemo  from "./sidebar";
+import DropdownMenuDemo from "./sidebar";
 
 const NavLinks = [
   {
@@ -36,7 +36,7 @@ const Navbar = () => {
   };
   const [results, setResults] = useState([]);
   return (
-    <nav className="h-16 fixed top-0 left-0 right-0 z-20  bg-opacity-80 bg-navprimaryBG dark:bg-navsecondaryBG dark:opacity-95 rounded-b">
+    <nav className="h-16 fixed top-0 left-0 right-0 dark:bg-[#190061] bg-[#7395EA] bg-opacity-80 z-50">
       <div className="flex flex-wrap items-center justify-between mx-auto p-8 px-4 py-2">
         <Link href={"/"} className="text-2xl md:text-5xl  font-semibold">
           <Image
@@ -47,15 +47,13 @@ const Navbar = () => {
           />
         </Link>
 
-        <div className="ml-10 w-50 hidden sm:flex">
-    
-        </div>
+        <div className="ml-10 w-50 hidden sm:flex"></div>
 
         <div className="mobile-menu flex md:hidden">
           <div className="mr-2 mt-2">
             <ThemeToggle />
           </div>
-          {!navbarOpen ? (
+          {/* {!navbarOpen ? (
             <button
               onClick={() => setNavbarOpen(true)}
               className="flex items-center px-3 py-2 border rounded mr-2"
@@ -69,7 +67,7 @@ const Navbar = () => {
             >
               <XMarkIcon className="h-5 w-5  dark:text-slate-200" />
             </button>
-          )}
+          )} */}
           <div className="mt-2" onClick={handleShowMenu}>
             <DropdownMenuDemo />
           </div>
@@ -88,9 +86,7 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-          
-            <DropdownMenuDemo />
-            
+              <DropdownMenuDemo />
             </li>
           </ul>
         </div>
