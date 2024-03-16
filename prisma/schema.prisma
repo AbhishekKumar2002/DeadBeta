@@ -16,5 +16,15 @@ model users {
   gender   String
   created  DateTime @default(now())
   updated  DateTime @updatedAt
+
+  travelist travel[]
 }
 
+model travel {
+  id Int @id @default(autoincrement())
+  users   users? @relation(fields: [usersId], references: [id])
+  usersId Int?
+  from String
+  to String
+  date DateTime
+}

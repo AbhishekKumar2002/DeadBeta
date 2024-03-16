@@ -2,16 +2,28 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { IconAppWindow } from "@tabler/icons-react";
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { BackgroundGradient } from "@/components/ui/background-gradient";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const From = () => {
+  const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    console.log(typeof date);
   };
 
   const [input, setInput] = useState("");
@@ -19,68 +31,124 @@ const From = () => {
 
   const handleChange = (value) => {
     setInput(value);
-    // fetchData(value);
   };
 
   const tohandleChange = (value1) => {
     tosetInput(value1);
-    // fetchData(value1);
   };
 
+  const handleAddData = async () => {
+    if (!session || !session?.user) redirect("/login");
+    const username = session.user.username;
+    try {
+      const res = await fetch("/api/addtravel", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          from: input,
+          to: toinput,
+          date: selectedDate,
+        }),
+      });
+      console.log(res)
+      if (res.ok) {
+        alert("added");
+      } else {
+        alert("already there");
+      }
+    } catch (err) {
+      alert("Something went wrong");
+    }
+  };
   return (
-    // <div className="flex flex-col w-[75%] mx-auto p-8 bg-slate-300 border-double border-4 rounded-3xl font-bold text-black ml-3 mr-3">
-    <div className="w-[80%]">
-    <BackgroundGradient className="flex flex-col rounded-[22px] w-full p-4 sm:p-10 bg-slate-300 dark:bg-zinc-900">
-      <form>
-        <div className="flex flex-col mt-4">
-          <label htmlFor="from">From</label>
-          <input
-            type="text"
-            id="from"
-            placeholder="From"
-            className="w-full mt-2 p-2 border rounded"
-            value={input}
-            onChange={(e) => handleChange(e.target.value)}
-          />
-        </div>
+    <Dialog>
+      <div className="w-[80%]">
+        <BackgroundGradient className="flex flex-col rounded-[22px] w-full p-4 sm:p-10 bg-slate-300 dark:bg-zinc-900">
+          <form>
+            <div className="flex flex-col mt-4">
+              <label htmlFor="from">From</label>
+              <input
+                type="text"
+                id="from"
+                placeholder="From"
+                className="w-full mt-2 p-2 border rounded"
+                value={input}
+                onChange={(e) => handleChange(e.target.value)}
+              />
+            </div>
 
-        <div className="flex flex-col mt-4">
-          <label htmlFor="to">To</label>
-          <input
-            type="text"
-            id="to"
-            placeholder="To"
-            className="w-full mt-2 p-2 border rounded"
-            value={toinput}
-            onChange={(e) => tohandleChange(e.target.value)}
-          />
-        </div>
+            <div className="flex flex-col mt-4">
+              <label htmlFor="to">To</label>
+              <input
+                type="text"
+                id="to"
+                placeholder="To"
+                className="w-full mt-2 p-2 border rounded"
+                value={toinput}
+                onChange={(e) => tohandleChange(e.target.value)}
+              />
+            </div>
 
-        <div className="mt-4">
-          <label htmlFor="dateTime">Date/Time</label>
-          <br />
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            showTimeSelect
-            dateFormat="Pp"
-            placeholderText="Select Date and Time"
-            className="w-full mt-2 p-2 border rounded"
-          />
-        </div>
+            <div className="mt-4">
+              <label htmlFor="dateTime">Date/Time</label>
+              <br />
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                showTimeSelect
+                dateFormat="Pp"
+                placeholderText="Select Date and Time"
+                className="w-full mt-2 p-2 border rounded"
+              />
+            </div>
 
-        <div className="flex items-center justify-center mt-8">
-          <button
-            type="button"
-            className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700"
-          >
-            Find
-          </button>
-        </div>
-      </form>
-      </BackgroundGradient>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 w-full transition-all"
+                >
+                  Find
+                </button>
+              </div>
+              <div className="w-full p-4">
+                <DialogTrigger asChild>
+                  <button
+                    type="button"
+                    className="bg-white text-black p-3 rounded-xl hover:bg-white/55 transition-all w-[100%]"
+                  >
+                    Add your card
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-white dark:bg-black dark:text-white border-none space-y-4">
+                  <DialogHeader>
+                    <DialogTitle>Are you sure?</DialogTitle>
+                    <DialogDescription>
+                      From: {input} <br />
+                      To: {toinput} <br />
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="gap-2">
+                    <DialogClose asChild>
+                      <Button className="shadow-sm shadow-black dark:shadow-white">
+                        Discard
+                      </Button>
+                    </DialogClose>
+                    <Button className="bg-black text-white hover:bg-black/95 dark:bg-white dark:text-black"
+                    onClick={handleAddData}>
+                      Add
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </div>
+            </div>
+          </form>
+        </BackgroundGradient>
       </div>
-    // </div>
+    </Dialog>
   );
 };
 

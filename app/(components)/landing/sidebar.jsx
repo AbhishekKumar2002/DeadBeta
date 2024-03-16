@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { FaCreativeCommonsNc } from "react-icons/fa";
 
 const DropdownMenuDemo = () => {
   const { data: session, status } = useSession();
@@ -64,23 +65,21 @@ const DropdownMenuDemo = () => {
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard className="mr-2 h-4 w-4" />
                 <span>Billing</span>
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Keyboard className="mr-2 h-4 w-4" />
-                <span>Keyboard shortcuts</span>
-                <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <Link href={`/user/${session.user.username}`}>
+                <DropdownMenuItem className="cursor-pointer">
+                  <FaCreativeCommonsNc className="mr-2 h-4 w-4" />
+                  <span>My Creation</span>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -111,11 +110,6 @@ const DropdownMenuDemo = () => {
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>
-              <DropdownMenuItem>
-                <Plus className="mr-2 h-4 w-4" />
-                <span>New Team</span>
-                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -158,7 +152,10 @@ const DropdownMenuDemo = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outlined" className="rounded-full bg-white dark:bg-slate-800 dark:text-slate-200">
+        <Button
+          variant="outlined"
+          className="rounded-full bg-white dark:bg-slate-800 dark:text-slate-200"
+        >
           <MenuIcon />
         </Button>
       </DropdownMenuTrigger>
