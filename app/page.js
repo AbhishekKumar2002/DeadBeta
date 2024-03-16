@@ -1,4 +1,5 @@
-import { AnimatedTooltipPreview } from "./(components)/landing/AnimatedTooltipPreview";
+// import { AnimatedTooltipPreview } from "./(components)/landing/AnimatedTooltipPreview";
+import { AnimatedTooltipPreview } from "./(components)/landing/AnimatedToolTipPreview";
 import Card_Home from "./(components)/landing/Card_Home";
 import Footer from "./(components)/landing/Footer";
 import From from "./(components)/landing/From";
