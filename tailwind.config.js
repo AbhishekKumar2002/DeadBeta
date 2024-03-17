@@ -78,8 +78,7 @@ module.exports = {
         secondaryBG:
           "linear-gradient(179.4deg, rgb(12, 20, 69) -16.9%, rgb(71, 30, 84) 119.9%)",
 
-        navprimaryBG:
-          "linear-gradient(to right, #4fd1c5, #48bbf7, #667eea)",
+        navprimaryBG: "linear-gradient(to right, #4fd1c5, #48bbf7, #667eea)",
         navsecondaryBG:
           "linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)",
       },
@@ -87,3 +86,14 @@ module.exports = {
   },
   plugins: [require("tailwindcss-animate")],
 };
+
+// function addVariablesForColors({ addBase, theme }) {
+//   let allColors = flattenColorPalette(theme("colors"));
+//   let newVars = Object.fromEntries(
+//     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+//   );
+ 
+//   addBase({
+//     ":root": newVars,
+//   });
+// }

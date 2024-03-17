@@ -36,7 +36,7 @@ const Navbar = () => {
   };
   const [results, setResults] = useState([]);
   return (
-    <nav className="h-16 fixed top-0 left-0 right-0 dark:bg-[#190061] bg-[#7395EA] bg-opacity-80 z-50">
+    <nav className="h-16 fixed top-0 left-0 right-0 dark:bg-[#8039fa] bg-[#7395EA] bg-opacity-80 z-50">
       <div className="flex flex-wrap items-center justify-between mx-auto p-8 px-4 py-2">
         <Link href={"/"} className="text-2xl md:text-5xl  font-semibold">
           <Image
