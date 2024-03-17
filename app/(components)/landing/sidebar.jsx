@@ -2,14 +2,11 @@ import {
   Cloud,
   CreditCard,
   Github,
-  Keyboard,
   LifeBuoy,
   LogOut,
   Mail,
   MenuIcon,
   MessageSquare,
-  Plus,
-  PlusCircle,
   Settings,
   User,
   UserPlus,
@@ -58,9 +55,12 @@ const DropdownMenuDemo = () => {
               </span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+          <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none mx-4">   
+            <DropdownMenuLabel>
+              <h1>Signed in as</h1>
+              <p className="font-semibold text-gray-500">{session.user.email}</p>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-gray-700/20" />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
@@ -87,29 +87,6 @@ const DropdownMenuDemo = () => {
                 <Users className="mr-2 h-4 w-4" />
                 <span>Team</span>
               </DropdownMenuItem>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  <span>Invite users</span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem>
-                      <Mail className="mr-2 h-4 w-4" />
-                      <span>Email</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      <span>Message</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      <span>More...</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -143,7 +120,7 @@ const DropdownMenuDemo = () => {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={() => signOut()}>LogOut</Button>
+            <Button onClick={() => signOut({redirect: false})}>LogOut</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -159,7 +136,7 @@ const DropdownMenuDemo = () => {
           <MenuIcon />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none">
+      <DropdownMenuContent className="w-56 bg-white text-black dark:bg-slate-800 dark:text-white border-none mx-4">
         <DropdownMenuLabel>
           <h1>Deadbeta</h1>
           <p className="font-light">Help to connect people</p>
@@ -167,7 +144,7 @@ const DropdownMenuDemo = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <Link href={"/components/login"}>
+          <Link href={"/login"}>
             <DropdownMenuItem className="cursor-pointer">
               <Users className="mr-2 h-4 w-4" />
               <span>SignIn</span>
@@ -179,14 +156,16 @@ const DropdownMenuDemo = () => {
               <span>SignUp</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent className="bg-white">
-                <DropdownMenuItem>
-                  <Mail className="mr-2 h-4 w-4" />
-                  <span>Email</span>
-                </DropdownMenuItem>
+              <DropdownMenuSubContent className="bg-white dark:bg-slate-800 dark:text-white border-none">
+                <Link href="/signup">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Mail className="mr-2 h-4 w-4" />
+                    <span>Email</span>
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   <MessageSquare className="mr-2 h-4 w-4" />
-                  <span>Message</span>
+                  <span>Google</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
               </DropdownMenuSubContent>

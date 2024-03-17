@@ -223,7 +223,7 @@ export default function ProfileForm() {
                   <p class="text-sm text-gray-500 sm:mt-0">
                     Already have an account?
                     <Link
-                      href="/components/login"
+                      href="/login"
                       className="text-gray-400 underline"
                     >
                       Log in
