@@ -107,7 +107,7 @@ export default function SignInForm() {
                   <p class="text-sm text-gray-500 sm:mt-0">
                     Don't have an account?
                     <Link
-                      href="/components/signup"
+                      href="/signup"
                       className="text-gray-400 underline"
                     >
                       SignUp for free...

@@ -4,6 +4,7 @@ import Navbar from "./(components)/landing/NavBar";
 import Footer from "./(components)/landing/Footer";
 import AuthProvider from "./context/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <AuthProvider>
+            <Toaster />
             <Navbar />
             {children}
             <Footer />

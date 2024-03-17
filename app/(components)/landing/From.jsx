@@ -16,19 +16,21 @@ import {
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
 const From = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    console.log(typeof date);
   };
 
   const [input, setInput] = useState("");
   const [toinput, tosetInput] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (value) => {
     setInput(value);
   };
@@ -38,9 +40,21 @@ const From = () => {
   };
 
   const handleAddData = async () => {
-    if (!session || !session?.user) redirect("/login");
+    if (!session || !session?.user) {
+      toast.error("Please login first");
+      return router.push("/login");
+    }
     const username = session.user.username;
     try {
+      if (
+        input.trim().length === 0 ||
+        toinput.trim().length === 0 ||
+        !selectedDate
+      ) {
+        toast.error("Add all the field");
+        return;
+      }
+      setLoading(true);
       const res = await fetch("/api/addtravel", {
         method: "POST",
         headers: {
@@ -53,14 +67,16 @@ const From = () => {
           date: selectedDate,
         }),
       });
-      console.log(res)
       if (res.ok) {
-        alert("added");
+        toast.success("Successfully Created ✅");
+        setLoading(false);
       } else {
-        alert("already there");
+        toast.error("Already Have ❌");
+        setLoading(false);
       }
     } catch (err) {
-      alert("Something went wrong");
+      toast.error("Something went wrong 😥");
+      setLoading(false);
     }
   };
   return (
@@ -107,12 +123,14 @@ const From = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
               <div className="w-full">
-                <button
-                  type="button"
-                  className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 w-full transition-all"
-                >
-                  Find
-                </button>
+                <Link href={`/event/${input}`}>
+                  <button
+                    type="button"
+                    className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 w-full transition-all"
+                  >
+                    Search
+                  </button>
+                </Link>
               </div>
               <div className="w-full p-4">
                 <DialogTrigger asChild>
@@ -137,9 +155,12 @@ const From = () => {
                         Discard
                       </Button>
                     </DialogClose>
-                    <Button className="bg-black text-white hover:bg-black/95 dark:bg-white dark:text-black"
-                    onClick={handleAddData}>
-                      Add
+                    <Button
+                      className="bg-black text-white hover:bg-black/95 dark:bg-white dark:text-black"
+                      onClick={handleAddData}
+                      disabled={loading}
+                    >
+                      {loading ? "Creating..." : "Create"}
                     </Button>
                   </DialogFooter>
                 </DialogContent>

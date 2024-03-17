@@ -11,13 +11,12 @@ export default function Event({ params: { address } }) {
   // prisma query
 
   return (
-    <div className="mt-16 bg-slate-200 dark:bg-slate-900">
+    <div className="mt-16 bg-slate-200 dark:bg-slate-900 p-4">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {user.map(({ img, name, location }, index) => (
           <Card key={index} img={img} name={name} location={location} />
         ))}
       </div>
-      <PagenationPage />
     </div>
   );
 }
