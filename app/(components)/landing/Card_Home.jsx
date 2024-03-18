@@ -1,4 +1,3 @@
-// import { HoverEffect } from "../ui/card-hover-effect";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 export default function Card_Home() {
