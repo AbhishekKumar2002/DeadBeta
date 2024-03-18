@@ -82,7 +82,7 @@ const From = () => {
   };
   return (
     <Dialog>
-      <div className="w-[80%]">
+      <div className="w-[80%] md:mt-0 mt-10">
         <BackgroundGradient className="flex flex-col rounded-[22px] w-full p-4 sm:p-10 bg-slate-300 dark:bg-zinc-900">
           <div className="flex items-center justify-center">
             <h1 className="font-extrabold font-sans text-3xl">
