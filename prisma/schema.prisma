@@ -18,13 +18,21 @@ model users {
   updated  DateTime @updatedAt
 
   travelist travel[]
+  rating    rating?
+}
+
+model rating {
+  id      Int   @id @default(autoincrement())
+  feedback String
+  users   users @relation(fields: [usersId], references: [id])
+  usersId Int   @unique
 }
 
 model travel {
-  id Int @id @default(autoincrement())
-  users   users? @relation(fields: [usersId], references: [id])
+  id      Int      @id @default(autoincrement())
+  users   users?   @relation(fields: [usersId], references: [id])
   usersId Int?
-  from String
-  to String
-  date DateTime
+  from    String
+  to      String
+  date    DateTime
 }
