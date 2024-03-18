@@ -42,6 +42,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FaCreativeCommonsNc } from "react-icons/fa";
 
+
 const DropdownMenuDemo = () => {
   const { data: session, status } = useSession();
   if (status === "authenticated") {
@@ -97,9 +98,10 @@ const DropdownMenuDemo = () => {
               <LifeBuoy className="mr-2 h-4 w-4" />
               <span>Support</span>
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>
+            <DropdownMenuItem >
               <Cloud className="mr-2 h-4 w-4" />
-              <span>API</span>
+              
+              <span>Add Reviews</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DialogTrigger>

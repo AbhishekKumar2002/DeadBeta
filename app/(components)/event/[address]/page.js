@@ -45,7 +45,7 @@ export default async function Event({ params: { address } }) {
     date,
     ...users,
   }));
-  
+
   console.log(user);
   if (user.length < 0) {
     return (
@@ -69,9 +69,24 @@ export default async function Event({ params: { address } }) {
   return (
     <div className="mt-16 bg-slate-200 dark:bg-slate-900 p-4">
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-        {user.map(({  name, from, to, usersId, date, username, email, gender }, index) => (
-          <Card key={index} name={name} from={from} to={to} usersId={usersId} date={date} username={username} email={email} gender={gender} />
-        ))}
+        {user.map(
+          (
+            { name, from, to, usersId, date, username, email, gender },
+            index
+          ) => (
+            <Card
+              key={index}
+              name={name}
+              from={from}
+              to={to}
+              usersId={usersId}
+              date={date}
+              username={username}
+              email={email}
+              gender={gender}
+            />
+          )
+        )}
       </div>
     </div>
   );

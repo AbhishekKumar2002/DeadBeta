@@ -25,7 +25,7 @@ const HeroSection = () => {
           <Suspense fallback={null}>
             <Earth_new />
           </Suspense>
-          <Environment preset="forest" />
+          {/* <Environment preset="forest" /> */}
         </Canvas>
       </div>
     </div>
