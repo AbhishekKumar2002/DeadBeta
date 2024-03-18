@@ -84,6 +84,11 @@ const From = () => {
     <Dialog>
       <div className="w-[80%]">
         <BackgroundGradient className="flex flex-col rounded-[22px] w-full p-4 sm:p-10 bg-slate-300 dark:bg-zinc-900">
+          <div className="flex items-center justify-center">
+            <h1 className="font-extrabold font-sans text-3xl">
+              Share Safe, Ride Together
+            </h1>
+          </div>
           <form>
             <div className="flex flex-col mt-4">
               <label htmlFor="from">From</label>
@@ -127,9 +132,12 @@ const From = () => {
                 <Link href={`/event/${input}&${toinput}&${selectedDate}`}>
                   <button
                     type="button"
-                    className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 w-full transition-all"
+                    className="relative inline-flex h-12 overflow-hidden rounded-full p-[3px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 w-full"
                   >
-                    Search
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                    <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                      Search
+                    </span>
                   </button>
                 </Link>
               </div>
@@ -137,7 +145,7 @@ const From = () => {
                 <DialogTrigger asChild>
                   <button
                     type="button"
-                    className="bg-white text-black p-3 rounded-xl hover:bg-white/55 transition-all w-[100%]"
+                    className="w-full inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
                   >
                     Add your card
                   </button>
