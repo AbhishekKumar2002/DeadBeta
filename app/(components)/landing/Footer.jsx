@@ -3,8 +3,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    
-    <section className="relative overflow-hidden py-10 bg-opacity-80 bg-slate-400 dark:bg-[#190061] dark:text-slate-400">
+    <section className="relative overflow-hidden py-10 bg-opacity-80 bg-[#7395EA] dark:bg-[#190061] dark:text-slate-400">
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <div className="-m-6 flex flex-wrap">
           <div className="w-full p-6 md:w-1/2 lg:w-5/12">
@@ -29,7 +28,9 @@ const Footer = () => {
                   height={2000}
                   className="h-32 w-48"
                 />
-                <span className="ml-14 mt-[-18px] text-lg font-bold">DeadBeta</span>
+                <span className="ml-14 mt-[-18px] text-lg font-bold">
+                  DeadBeta
+                </span>
               </div>
               <div>
                 <p className="mb-4 text-base font-medium"></p>
@@ -157,7 +158,6 @@ const Footer = () => {
         </div>
       </div>
     </section>
-  
   );
 };
 

@@ -12,7 +12,7 @@ import { useGLTF } from "@react-three/drei";
 import { useThree } from '@react-three/fiber'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF("/models/earth_new.gltf");
+  const { nodes, materials } = useGLTF("/models/earth_new1.gltf");
   const { camera } = useThree();
   // Set the initial camera position for zoom
   camera.position.set(1.5, 1.5, 1.5);
