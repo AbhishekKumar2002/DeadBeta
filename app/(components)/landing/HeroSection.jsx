@@ -17,7 +17,7 @@ const HeroSection = () => {
         <From />
       </div>
       {/* <Earth3d /> */}
-      <div className="w-full h-[calc((100vh-16px)/2)] sm:h-[calc(100vh-16px)] sm:w-1/2 flex flex-col justify-center items-center">
+      <div className="w-full h-[calc((100vh-16px)/2)] sm:h-[calc(100vh-16px)] sm:w-1/2 flex flex-col justify-center items-center mt-24 md:mt-0">
         <Canvas className="h-100">
           
           <ambientLight />
