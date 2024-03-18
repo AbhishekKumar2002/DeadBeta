@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ratingData, addRatingData } from "./ratingFunc";
+import { ratingData, addRatingData, updateRatingData  } from "./ratingFunc";
 
 export async function POST(req){
     try {
@@ -24,6 +24,24 @@ export async function GET(req){
         const res = await ratingData()
         return NextResponse.json({
             res
+        },{
+            status: 200
+        })
+    } catch(err){
+        return NextResponse.json({
+            message: err.message,
+        },{
+            status: 500
+        })
+    }
+}
+
+export async function PUT(req){
+    try {
+        const { username, feedback } = await req.json()
+        const res = await updateRatingData(username,feedback)
+        return NextResponse.json({
+            message: "Updated",
         },{
             status: 200
         })

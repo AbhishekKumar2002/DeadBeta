@@ -45,3 +45,32 @@ export async function ratingData() {
     };
   }
 }
+export async function updateRatingData(username, feedback) {
+  try {
+    const user = await db.users.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (!user) {
+      return {
+        message: "User not found",
+      };
+    }
+
+    const res = await db.rating.update({
+      where: {
+        usersId: user.id,
+      },
+      data: {
+        feedback,
+      },
+    });
+    return res;
+  } catch (err) {
+    return {
+      message: err.message,
+    };
+  }
+}
