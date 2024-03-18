@@ -24,8 +24,9 @@ const From = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange = (datestring) => {
+    console.log(datestring);
+    setSelectedDate(datestring);
   };
 
   const [input, setInput] = useState("");
@@ -123,7 +124,7 @@ const From = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
               <div className="w-full">
-                <Link href={`/event/${input}`}>
+                <Link href={`/event/${input}&${toinput}&${selectedDate}`}>
                   <button
                     type="button"
                     className="bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 w-full transition-all"
