@@ -21,12 +21,15 @@ export async function POST(req) {
     gender: z.string().min(0, {
       message: "",
     }),
+    userimg: z.string().min(0, {
+      message: "",
+    }),
   });
 
   try {
     const body = await req.json();
     console.log(body);
-    const { username, email, password, name, gender } = formSchema.parse(body);
+    const { username, email, password, name, gender,userimg } = formSchema.parse(body);
 
     const exuserbyemail = await db.users.findUnique({
       where: { email: email },
@@ -57,6 +60,7 @@ export async function POST(req) {
         password: haspass,
         name,
         gender,
+        userimg,
       },
     });
      
@@ -65,6 +69,7 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: "Registration UnSuccessful" },
       { status: 420 }

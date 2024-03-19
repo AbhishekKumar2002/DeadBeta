@@ -113,16 +113,16 @@ const DropdownMenuDemo = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DialogContent className="bg-white">
+        <DialogContent className="dark:bg-slate-400 dark:text-black">
           <DialogHeader>
             <DialogTitle>Are you sure?</DialogTitle>
             <DialogDescription>Do you want to logout?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button className="border" variant="outline">Cancel</Button>
             </DialogClose>
-            <Button onClick={() => signOut({redirect: false})}>LogOut</Button>
+            <Button className="border dark:bg-slate-800" onClick={() => signOut({redirect: false})}>LogOut</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

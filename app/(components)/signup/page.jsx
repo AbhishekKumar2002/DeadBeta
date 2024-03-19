@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import Image from "next/image";
 
 const formSchema = z.object({
   username: z.string().regex(/^[a-zA-Z0-9_.]{3,}$/, {
@@ -52,11 +53,12 @@ export default function ProfileForm() {
       name: "",
       password: "",
       gender: "",
+      userimg: "",
     },
   });
 
   async function onSubmit(values) {
-    console.log(values);
+    console.log("abhishek");
 
     const response = await fetch("/api/user", {
       method: "POST",
@@ -69,17 +71,18 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
+        userimg: values.gender,
       }),
     });
 
     if (response.ok) {
-      router.push("/components/login");
+      router.push("/login");
     } else {
       console.error("Registration Failed");
     }
   }
   return (
-    <section className="mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
+    <section className="dark:bg-slate-800 bg-slate-300 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
@@ -100,7 +103,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Username"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
+                            className="flex h-10 w-full rounded-3xl border  dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -122,7 +125,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Your Email address"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -144,7 +147,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Your Name.."
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                           />
                         </FormControl>
                         <FormDescription>Your full name.</FormDescription>
@@ -165,7 +168,7 @@ export default function ProfileForm() {
                             type="password"
                             placeholder="********"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -189,11 +192,11 @@ export default function ProfileForm() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50">
+                            <SelectTrigger className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50">
                               <SelectValue placeholder="Gender" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-50 bg-white   flex rounded-md border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 ">
+                          <SelectContent className="z-50 bg-white dark:bg-slate-700 dark:text-slate-300   flex rounded-md border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 ">
                             <SelectItem
                               value="Male"
                               className="cursor-pointer border-b-2 "
@@ -222,10 +225,7 @@ export default function ProfileForm() {
                   />
                   <p class="text-sm text-gray-500 sm:mt-0">
                     Already have an account?
-                    <Link
-                      href="/login"
-                      className="text-gray-400 underline"
-                    >
+                    <Link href="/login" className="text-gray-400 underline">
                       Log in
                     </Link>
                     .
@@ -261,11 +261,14 @@ export default function ProfileForm() {
           </div>
         </div>
 
-        <div className="h-full w-full">
-          <img
-            className="mx-auto h-full w-full rounded-2xl object-cover"
-            src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+        <div className="flex items-center justify-center h-full w-full mt-[-4]">
+          <Image
+            height={1000}
+            width={1000}
+            className="h-[80%] w-[80%] rounded-2xl"
+            // src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
             // src="https://images.unsplash.com/photo-1630673245362-f69d2b93880e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+            src="/images/new-york-1209232_1920.jpg"
           />
         </div>
       </div>

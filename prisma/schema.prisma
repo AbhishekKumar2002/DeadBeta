@@ -16,7 +16,7 @@ model users {
   gender   String
   created  DateTime @default(now())
   updated  DateTime @updatedAt
-
+  userimg  String
   travelist travel[]
   rating    rating?
 }

@@ -83,9 +83,9 @@ module.exports = {
       },
       backgroundImage: {
         primaryBG:
-          "linear-gradient(to right, rgb(149, 236, 247), rgb(240, 240, 240))",
+          "slate-400",
         secondaryBG:
-          "linear-gradient(179.4deg, rgb(12, 20, 69) -16.9%, rgb(71, 30, 84) 119.9%)",
+          "slate-600",
 
         navprimaryBG: "linear-gradient(to right, #4fd1c5, #48bbf7, #667eea)",
         navsecondaryBG:

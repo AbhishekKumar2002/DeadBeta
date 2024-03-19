@@ -53,7 +53,7 @@ export default function SignInForm() {
     }
   }
   return (
-    <section className="mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
+    <section className="dark:bg-slate-800 bg-slate-300 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
       <div className="grid grid-cols-1 lg:grid-cols-2 mt-0">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md ">
@@ -106,10 +106,7 @@ export default function SignInForm() {
 
                   <p class="text-sm text-gray-500 sm:mt-0">
                     Don't have an account?
-                    <Link
-                      href="/signup"
-                      className="text-gray-400 underline"
-                    >
+                    <Link href="/signup" className="text-gray-400 underline">
                       SignUp for free...
                     </Link>
                     .
