@@ -28,12 +28,12 @@ export const PaySection = ({bgcolor, color}) => {
         )
         console.log(data)
         var options = {
-            "key": "rzp_test_vQi5k24ZgUEONx", 
+            "key": "rzp_test_TH3Jeccpoz3Bnd", 
             "amount": "50000", 
             "currency": "INR",
-            "name": "Frostbite",
-            "description": "Donate to your favorite clubs",
-            "image": "https://frostbite-two.vercel.app/favicon.ico",
+            "name": "DeadBeta",
+            "description": "Share with care",
+            "image": "https://dead-beta.vercel.app/favicon.ico",
             "handler": function (response){
                 alert(response.razorpay_payment_id);
                 alert(response.razorpay_order_id);
