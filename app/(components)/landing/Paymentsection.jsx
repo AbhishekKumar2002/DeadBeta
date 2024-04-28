@@ -28,7 +28,7 @@ export const PaySection = ({bgcolor, color}) => {
         )
         console.log(data)
         var options = {
-            "key": "rzp_test_vQi5k24ZgUEONx", 
+            "key": "rzp_test_27SMES6jogHj1J", 
             "amount": "50000", 
             "currency": "INR",
             "name": "DeadBeta",
