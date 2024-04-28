@@ -23,12 +23,12 @@ export const PaySection = ({bgcolor, color}) => {
             return
         }
     
-        const data = await fetch('./api/razorpay/razorpay', { method: 'POST' }).then((t) => 
+        const data = await fetch('./api/razorpay', { method: 'POST' }).then((t) => 
             t.json()
         )
         console.log(data)
         var options = {
-            "key": "rzp_test_TH3Jeccpoz3Bnd", 
+            "key": "rzp_test_27SMES6jogHj1J", 
             "amount": "50000", 
             "currency": "INR",
             "name": "DeadBeta",
@@ -65,7 +65,7 @@ export const PaySection = ({bgcolor, color}) => {
                 color: `${color}`
               }}
           >
-            Donate 500rs
+            Pay 500rs
           </a>
         </div>
     )
