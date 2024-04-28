@@ -3,8 +3,8 @@ import { ratingData, addRatingData, updateRatingData  } from "./ratingFunc";
 
 export async function POST(req){
     try {
-        const { username, feedback } = await req.json()
-        const res = await addRatingData(username,feedback)
+        const data = await req.json()
+        const res = await addRatingData(data.users.username,data.feedback)
         return NextResponse.json({
             message: "Added",
         },{
@@ -18,6 +18,8 @@ export async function POST(req){
         })
     }
 }
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(req){
     try {

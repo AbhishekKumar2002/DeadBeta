@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export const HoverEffect = ({ items, className }) => {
+
   let [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
@@ -53,7 +54,7 @@ export const Card = ({ className, children }) => {
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-[#0096FF] dark:bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
+        "rounded-2xl h-72 w-full p-4 overflow-hidden bg-[#0096FF] dark:bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
         className
       )}
     >
