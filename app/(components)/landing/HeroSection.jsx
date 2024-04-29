@@ -9,11 +9,18 @@ import { useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import Earth_new from "./earth1/Earth_new";
+import { ImagesSliderDemo } from "./ImageSliderDemo";
 import { PaySection } from "./Paymentsection";
 
 const HeroSection = () => {
   return (
-    <div className="flex flex-col sm:flex-row mt-16  justify-evenly">
+    <div className="">
+      <div className="mt-16">
+        <ImagesSliderDemo/>
+      </div>
+      <div className="flex flex-col sm:flex-row mt-16  justify-evenly">
+      
+
       <div className="w-full h-[calc((100vh-16px)/2)] mt-12 sm:mt-0 sm:h-[calc(100vh-16px)] sm:w-1/2 flex flex-col justify-center items-center">
         <From />
       </div>
@@ -30,6 +37,7 @@ const HeroSection = () => {
         </Canvas>
         <PaySection bgcolor={'#e0e7ff'} color={'#4f46e5'} />
       </div>
+    </div>
     </div>
   );
 };

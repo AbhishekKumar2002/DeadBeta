@@ -20,6 +20,7 @@ export default function Card_Home() {
   const [toinput, tosetInput] = useState("");
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
+  const [refetch,setRefetch] = useState(false)
   const router = useRouter();
 
   const handleChange = (value) => {
@@ -31,6 +32,7 @@ export default function Card_Home() {
       return router.push("/login");
     }
     const username = session.user.username;
+    console.log(session)
     try {
       if (input.trim().length <= 0) {
         toast.error("Add Review");
@@ -43,13 +45,17 @@ export default function Card_Home() {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          username,
-          feedback: input
+          feedback: input,
+          users: {
+            username,
+            name: username
+          }
         }),
       });
       if (res.ok) {
         toast.success("Successfully Added ✅");
         setLoading(false);
+        setRefetch(prev => !prev)
       } else {
         toast.error("Already Have ❌");
         setLoading(false);
@@ -59,17 +65,22 @@ export default function Card_Home() {
       setLoading(false);
     }
   }
-  const [feedback,setFeedback] = useState(null)
+  const [feedback,setFeedback] = useState([])
   useEffect(() => {
     async function getFeedback(){
-      const res = await fetch('/api/rating')
-      console.log('====================================');
-      console.log(await res.json());
-      console.log('====================================');
-      setFeedback(res)
+      const res = await fetch('/api/rating',{ cache: 'no-store' })
+      const data = (await res.json()).res;
+      if(data){
+        const reviews = data.map(item => ({
+          title: item.users.name,
+          description: item.feedback,
+          link: `/user/${item.users.username}`
+        }))
+        setFeedback(reviews)
+      }
     }
     getFeedback()
-  },[])
+  },[refetch])
   return (
     <div className="max-w-5xl mx-auto px-8">
       <h1 className="text-white mb-4 text-4xl sm:text-4xl font-extrabold">
@@ -77,7 +88,9 @@ export default function Card_Home() {
           Customer Reviews
         </span>
       </h1>
-      <HoverEffect items={projects} />
+      { 
+        feedback.length > 0 && <HoverEffect items={feedback} />
+      }
       <div className="flex items-center justify-center mb-4">
         <Dialog>
           <DialogTrigger asChild>
@@ -111,7 +124,7 @@ export default function Card_Home() {
                   className="border rounded-md border-black dark:border-white p-2 w-[50%]"
                   onClick={handleAddReview}
                 >
-                  Add Review
+                  { loading ? "Adding..." : "Add Review" }
                 </button>
               </div>
             </DialogHeader>
@@ -121,35 +134,3 @@ export default function Card_Home() {
     </div>
   );
 }
-export const projects = [
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-  {
-    title: "Abhishek Kumar",
-    description: "Help a lot",
-    link: "",
-  },
-];

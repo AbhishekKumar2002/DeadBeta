@@ -12,9 +12,9 @@ export default async function Event({ params: { username } }) {
   if (!session) {
     redirect("/login");
   }
-  if (session.user.username !== username) {
-    notFound();
-  }
+  // if (session.user.username !== username) {
+  //   notFound();
+  // }
   const user = await db.users.findUnique({
     where: {
       username,
@@ -52,7 +52,7 @@ export default async function Event({ params: { username } }) {
         {history.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             {history.map(({ from, to, date, id }, index) => (
-              <Card key={index} from={from} cardId={id} to={to} date={date} />
+              <Card key={index} from={from} cardId={id} to={to} date={date} remove={session.user.username !== username} />
             ))}
           </div>
         ) : (
