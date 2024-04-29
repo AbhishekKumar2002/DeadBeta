@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl= env("DIRECT_URL")
 }
 
 model users {
@@ -19,6 +20,8 @@ model users {
   userimg  String
   travelist travel[]
   rating    rating?
+
+  
 }
 
 model rating {

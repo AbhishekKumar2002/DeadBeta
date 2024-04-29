@@ -1,9 +1,20 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Chat from "./comp.js"
 export default function Card({ name, from, to, usersId, date, username, email, gender }) {
   return (
+    
+    <Dialog >
     <CardContainer className="inter-var">
       <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
         <CardItem className="w-full mt-1">
@@ -38,12 +49,14 @@ export default function Card({ name, from, to, usersId, date, username, email, g
           >
             Request
           </CardItem>
+          <DialogTrigger>
           <CardItem
             as="button"
             className="px-4 py-2 rounded-xl bg-blue-500/40 text-black dark:text-white text-xs w-full hover:bg-blue-500/70"
           >
             Chat 
           </CardItem>
+          </DialogTrigger>
           <CardItem
             as="button"
             className="px-4 py-2 rounded-xl bg-red-500/40 text-black dark:text-white text-xs w-full hover:bg-red-500/70"
@@ -53,5 +66,17 @@ export default function Card({ name, from, to, usersId, date, username, email, g
         </div>
       </CardBody>
     </CardContainer>
+   
+    
+  
+  <DialogContent className="h-fit w-fit ">
+      
+
+
+    
+  <Chat/>
+  </DialogContent>
+</Dialog>
+
   );
 }
