@@ -24,11 +24,11 @@ const NavLinks = [
   },
   {
     title: "About",
-    path: "#about",
+    path: "/about",
   },
   {
     title: "Contact",
-    path: "#contact",
+    path: "/contact",
   },
   {
     title: "Price",
@@ -58,7 +58,7 @@ const Navbar = () => {
           href={"/"}
           className="text-2xl md:text-4xl text-white font-semibold"
         >
-          Dead Beta
+          Live Beta
         </Link>
 
         <div className="ml-10 w-50 hidden sm:flex"></div>
