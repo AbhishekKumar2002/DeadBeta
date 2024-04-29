@@ -12,9 +12,9 @@ export default async function Event({ params: { username } }) {
   if (!session) {
     redirect("/login");
   }
-  if (session.user.username !== username) {
-    notFound();
-  }
+  // if (session.user.username !== username) {
+  //   notFound();
+  // }
   const user = await db.users.findUnique({
     where: {
       username,
