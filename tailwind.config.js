@@ -1,3 +1,9 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -69,11 +75,11 @@ module.exports = {
         },
         shimmer: {
           from: {
-            "backgroundPosition": "0 0"
+            backgroundPosition: "0 0",
           },
           to: {
-            "backgroundPosition": "-200% 0"
-          }
+            backgroundPosition: "-200% 0",
+          },
         },
       },
       animation: {
@@ -82,10 +88,8 @@ module.exports = {
         shimmer: "shimmer 2s linear infinite",
       },
       backgroundImage: {
-        primaryBG:
-          "slate-400",
-        secondaryBG:
-          "slate-600",
+        primaryBG: "slate-400",
+        secondaryBG: "slate-600",
 
         navprimaryBG: "linear-gradient(to right, #4fd1c5, #48bbf7, #667eea)",
         navsecondaryBG:
@@ -93,16 +97,19 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    addVariablesForColors, 
+  ],
 };
 
-// function addVariablesForColors({ addBase, theme }) {
-//   let allColors = flattenColorPalette(theme("colors"));
-//   let newVars = Object.fromEntries(
-//     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
-//   );
- 
-//   addBase({
-//     ":root": newVars,
-//   });
-// }
+function addVariablesForColors({ addBase, theme }) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
