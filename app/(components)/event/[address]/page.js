@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import Card from "./Card";
 import PagenationPage from "./PagenationPage";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function Event({ params: { address } }) {
   const location = address.split("%26");
@@ -15,12 +17,11 @@ export default async function Event({ params: { address } }) {
     .split("%2B")
     .join("+");
   date = new Date(date);
-  console.log(date);
   const data = await db.travel.findMany({
     where: {
       from,
       to,
-      // date
+      onlyDate: date
     },
     select: {
       from: true,
@@ -47,18 +48,18 @@ export default async function Event({ params: { address } }) {
   }));
 
   console.log(user);
-  if (user.length < 0) {
+  if (user.length <= 0) {
     return (
-      <div className="flex flex-col justify-center items-center gap-2 mb-5">
+      <div className="flex flex-col justify-center items-center gap-2 mb-5 min-h-screen">
         <div>
           <Image src="/empty.png" alt="empty" height={450} width={450} />
         </div>
 
-        <h1 className="text-4xl text-center">Nothing found</h1>
+        <h1 className="text-4xl text-center">No User Found</h1>
         <Link href="/">
           <button
             type="button"
-            className="bg-blue-500 w-full text-black p-3 rounded-xl hover:bg-blue-500/55 transition-all"
+            className="bg-blue-500 w-full text-black p-3 rounded-xl hover:bg-blue-500/55 transition-all mt-4"
           >
             <p className="font-semibold text-xs">Create one</p>
           </button>

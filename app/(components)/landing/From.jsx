@@ -19,16 +19,18 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { getTimeAndDate } from "@/lib/parseDateTime";
 
 const From = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateChange = (datestring) => {
-    console.log(datestring);
+    // console.log(datestring);
     setSelectedDate(datestring);
+    // const [date,time] = getTimeAndDate(datestring)
+    // console.log({ date, time })
   };
-
   const [input, setInput] = useState("");
   const [toinput, tosetInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -63,9 +65,10 @@ const From = () => {
         },
         body: JSON.stringify({
           username,
-          from: input,
-          to: toinput,
+          from: input.trim().toLowerCase(),
+          to: toinput.trim().toLowerCase(),
           date: selectedDate,
+          onlyDate: getTimeAndDate(selectedDate)[0]
         }),
       });
       if (res.ok) {
@@ -129,7 +132,7 @@ const From = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
               <div className="w-full">
-                <Link href={`/event/${input}&${toinput}&${selectedDate}`}>
+                <Link href={`/event/${input.trim().toLowerCase()}&${toinput.trim().toLowerCase()}&${getTimeAndDate(selectedDate)[0]}`}>
                   <button
                     type="button"
                     className="relative inline-flex h-12 overflow-hidden rounded-full p-[3px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 w-full"
@@ -156,6 +159,8 @@ const From = () => {
                     <DialogDescription>
                       From: {input} <br />
                       To: {toinput} <br />
+                      Date: { } <br />
+                      Time: { } <br />
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter className="gap-2">

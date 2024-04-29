@@ -1,8 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import { getTimeAndDate } from "@/lib/parseDateTime";
+import Link from "next/link";
 
 export default function Card({ name, from, to, usersId, date, username, email, gender }) {
+  const [bookingDate,bookingTime] = getTimeAndDate(date)
   return (
     <CardContainer className="inter-var">
       <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
@@ -16,19 +19,21 @@ export default function Card({ name, from, to, usersId, date, username, email, g
           />
         </CardItem>
         <div className="mt-2 mb-2">
+          <Link href={`/user/${username}`}>
           <CardItem
             className="text-xl font-bold text-neutral-600 dark:text-white"
           >
             {name}
           </CardItem>
+          </Link>
           <CardItem
             as="div"
             className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300 bg-red flex flex-col w-full"
           >
               <p>From: {from}</p>
               <p>To: {to}</p>
-              {/* <p>Date: {date}</p>
-              <p>Time: {time}</p> */}
+              <p>Date: {bookingDate}</p>
+              <p>Time: {bookingTime}</p>
           </CardItem>
         </div>
         <div className="flex justify-between items-center gap-4 font-bold">

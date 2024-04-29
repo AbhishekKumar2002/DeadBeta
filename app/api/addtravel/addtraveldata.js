@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export async function addTravelData(username, from, to, date) {
+export async function addTravelData(username, from, to, date,onlyDate) {
   try {
     const user = await db.users.findUnique({
       where: {
@@ -20,6 +20,7 @@ export async function addTravelData(username, from, to, date) {
         from,
         to,
         date,
+        onlyDate: new Date(onlyDate)
       },
     });
     return out;

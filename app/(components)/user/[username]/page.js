@@ -12,13 +12,18 @@ export default async function Event({ params: { username } }) {
   if (!session) {
     redirect("/login");
   }
-  // if (session.user.username !== username) {
-  //   notFound();
-  // }
   const user = await db.users.findUnique({
     where: {
       username,
     },
+    select: {
+      name: true,
+      username: true,
+      email: true,
+      gender: true,
+      userimg: true,
+      created: true,
+    }
   });
   if (!user) notFound();
   const history = await db.travel.findMany({
@@ -39,7 +44,7 @@ export default async function Event({ params: { username } }) {
       },
     ],
   });
-  // console.log(history);
+  console.log(user);
 
   return (
     <div className="mt-16 bg-slate-200 dark:bg-slate-900 pb-4 relative">
