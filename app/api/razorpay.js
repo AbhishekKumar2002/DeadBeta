@@ -3,8 +3,8 @@ import shortid from 'shortid'
 
 export default async function handler(req, res) {
   const razorpay = new Razorpay({
-    key_id: 'rzp_test_TH3Jeccpoz3Bnd',
-    key_secret: 'Unrlfk7DnJEahAz2hLkyJmvP'
+    key_id: 'rzp_test_27SMES6jogHj1J',
+    key_secret: '9qApXLhrqM7ln2JISnDaZEmI'
   })
   const payment_capture = 1
   const amount = 499
