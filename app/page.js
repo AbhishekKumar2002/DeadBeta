@@ -49,7 +49,7 @@ export default function Home() {
                 ]
               })
             })}>PAY AND RIDE</button>
-     <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+    <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
 <script src="https://mediafiles.botpress.cloud/70c286e8-498a-424d-972e-074cb686db9c/webchat/config.js" defer></script>
 </div>
       {/* <Card_Home/>
