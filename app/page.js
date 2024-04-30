@@ -38,7 +38,7 @@ export default function Home() {
         <Card_Home />
         <Faq />
         <AnimatedTooltipPreview />
-        <button onClick={(() => {
+        <button  onClick={(() => {
               checkout({
                 lineItems: [
                   {
@@ -47,7 +47,7 @@ export default function Home() {
                   }
                 ]
               })
-            })}>BUY!</button>
+            })}>PAY AND RIDE</button>
        <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
     <script src="https://mediafiles.botpress.cloud/9da1583c-9e9c-45ff-908c-dd21beee74d1/webchat/config.js" defer></script>
       </div>
@@ -56,3 +56,4 @@ export default function Home() {
     </main>
   );
 }
+
