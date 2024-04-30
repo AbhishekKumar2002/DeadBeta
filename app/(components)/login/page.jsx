@@ -40,6 +40,7 @@ export default function SignInForm() {
   });
 
   async function onSubmit(values) {
+    const loadingToastId = toast.loading("Signing in...");
     const signInData = await signIn("credentials", {
       username: values.username,
       password: values.password,
@@ -47,7 +48,7 @@ export default function SignInForm() {
     });
     console.log(signInData);
 
-    const loadingToastId = toast.loading("Signing in...");
+    
 
     if (signInData?.error) {
       console.log(signInData.error);
@@ -55,6 +56,7 @@ export default function SignInForm() {
       toast.error("Sign-in failed. Please check your credentials and try again.");
     } else {
       toast.dismiss(loadingToastId);
+      toast.success("Logged In Successfully😊")
       router.push("../");
     }
   }

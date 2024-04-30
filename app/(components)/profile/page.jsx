@@ -33,7 +33,12 @@ const page = () => {
             <br />
 
             <h1 className='text-center font-extrabold'>
-                
+                Email
+            </h1>
+            <br />
+
+            <h1 className='text-center font-extrabold'>
+                Gender
             </h1>
             <br />
 
