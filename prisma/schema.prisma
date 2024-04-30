@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,6 +17,8 @@ model users {
   created  DateTime @default(now())
   updated  DateTime @updatedAt
   userimg  String
+  otp Int
+  isVerified Boolean
   travelist travel[]
   rating    rating?
 }

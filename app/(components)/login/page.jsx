@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
-import { checkout } from "../../../checkout"
+import { checkout } from "../../../checkout";
 
 import {
   Form,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -31,6 +32,7 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,24 +44,46 @@ export default function SignInForm() {
 
   async function onSubmit(values) {
     const loadingToastId = toast.loading("Signing in...");
-    const signInData = await signIn("credentials", {
-      username: values.username,
-      password: values.password,
-      redirect: false,
+    // isverified check
+    const res = await fetch("/api/checkverification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: form.getValues("username"),
+        email: form.getValues("email"),
+      }),
     });
-    console.log(signInData);
 
-    
-
-    if (signInData?.error) {
-      console.log(signInData.error);
-      toast.dismiss(loadingToastId);
-      toast.error("Sign-in failed. Please check your credentials and try again.");
+    if (!res.ok) {
+      toast.error("Please Verify your account first");
+      toast.dismiss(loadingToastId)
+      router.push("/signup");
     } else {
-      toast.dismiss(loadingToastId);
-      toast.success("Logged In Successfully😊")
-      router.push("../");
+      const signInData = await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        redirect: false,
+      });
+      if (signInData?.error) {
+        console.log(signInData.error);
+        toast.dismiss(loadingToastId);
+        toast.error(
+          "Sign-in failed. Please check your credentials and try again."
+        );
+      } else {
+        toast.dismiss(loadingToastId);
+        toast.success("Logged In Successfully😊");
+        router.push("../");
+      }
     }
+  }
+  if (status === "loading") {
+    return <Loading />;
+  } else if (status === "authenticated") {
+    router.replace("/");
+    return <></>;
   }
   return (
     <section className="dark:bg-gray-900 bg-slate-200 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
@@ -132,17 +156,23 @@ export default function SignInForm() {
                 </button>
               </form>
               <div></div>
-              <button type="button" className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80" onClick={(() => {
-              checkout({
-                lineItems: [
-                  {
-                    price: "price_1PAq13SBpUnk9vRLe24PUBpO",
-                    quantity: 1
-                  }
-                ]
-              })
-            })}>PAY AND RIDE</button>
-            <div></div>
+              <button
+                type="button"
+                className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                onClick={() => {
+                  checkout({
+                    lineItems: [
+                      {
+                        price: "price_1PAq13SBpUnk9vRLe24PUBpO",
+                        quantity: 1,
+                      },
+                    ],
+                  });
+                }}
+              >
+                PAY AND RIDE
+              </button>
+              <div></div>
               <div className="mt-3 space-y-3">
                 <button
                   type="button"
@@ -160,7 +190,6 @@ export default function SignInForm() {
                   </span>
                   Sign in with Google
                 </button>
-
               </div>
             </Form>
           </div>
