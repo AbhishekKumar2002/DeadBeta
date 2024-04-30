@@ -124,7 +124,7 @@ export default function Card_Home() {
                   className="border rounded-md border-black dark:border-white p-2 w-[50%]"
                   onClick={handleAddReview}
                 >
-                  Add Review
+                  { loading ? "Adding..." : "Add Review" }
                 </button>
               </div>
             </DialogHeader>

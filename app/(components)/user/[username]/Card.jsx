@@ -2,7 +2,7 @@ import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import RemoveButton from "./RemoveButton";
 import { parseDateAndTime } from "@/utils/parseDateAndTime";
 
-export default function Card({ from, to, cardId, date }) {
+export default function Card({ from, to, cardId, date, remove }) {
   const { formattedDate, formattedTime } = parseDateAndTime(date)
   return (
     <CardContainer className="inter-var w-full p-4">
@@ -35,7 +35,7 @@ export default function Card({ from, to, cardId, date }) {
           </CardItem>
         </div>
         <div className="flex justify-between items-center gap-4 font-bold">
-          <RemoveButton id={cardId} />
+          <RemoveButton id={cardId} remove={remove} />
         </div>
       </CardBody>
     </CardContainer>
