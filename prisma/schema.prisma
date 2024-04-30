@@ -35,4 +35,5 @@ model travel {
   from    String
   to      String
   date    DateTime
+  onlyDate DateTime @db.Date
 }
