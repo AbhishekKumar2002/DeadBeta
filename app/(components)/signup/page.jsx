@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import loginSignUp from "../../../public/images/login-animation.gif";
 import {
   Form,
   FormControl,
@@ -23,6 +24,10 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import Image from "next/image";
+// import { ImagetoBase64 } from "../utility/imagetoBase64";
+import { toast } from "react-hot-toast";
+import { ImagetoBase64 } from "./ImagetoBase64";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().regex(/^[a-zA-Z0-9_.]{3,}$/, {
@@ -43,8 +48,11 @@ const formSchema = z.object({
   }),
 });
 
+
+
 export default function ProfileForm() {
   const router = useRouter();
+  const [userImage, setUserImage] = useState(loginSignUp);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,9 +61,14 @@ export default function ProfileForm() {
       name: "",
       password: "",
       gender: "",
-      userimg: "",
+      userimg: loginSignUp,
     },
   });
+
+  const handleUploadProfileImage = async (e) => {
+    const data = await ImagetoBase64(e.target.files[0]);
+    setUserImage(data); // Set userImage state with the uploaded image data
+  };
 
   async function onSubmit(values) {
     console.log("abhishek");
@@ -71,7 +84,7 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: values.gender,
+        userimg: userImage,
       }),
     });
 
@@ -82,16 +95,34 @@ export default function ProfileForm() {
     }
   }
   return (
-    <section className="dark:bg-slate-800 bg-slate-300 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
+    <section className="dark:bg-gray-900 bg-slate-200 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-            <h2 className="text-3xl font-bold leading-tight  text-white-900 sm:text-4xl">
+          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md border pl-8 pr-8 pt-8 pb-8 rounded-2xl bg-slate-400 dark:bg-slate-950">
+            <h2 className="text-3xl font-bold leading-tight  text-white-900 sm:text-4xl text-center">
               Create Your Account
             </h2>
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
                 <div className="space-y-5">
+                  <div className="w-20 h-20 overflow-hidden rounded-full drop-shadow-md m-auto relative">
+                    <Image src={userImage} className="w-full h-full" width={100} height={100} />
+                    <label htmlFor="profileImage">
+                      <div className="absolute bottom-0 h-1/3 bg-slate-500 bg-opacity-50 w-full text-center">
+                        <p className="text-sm p-1 text-white cursor-pointer">
+                          Upload
+                        </p>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="profileImage"
+                        className="hidden"
+                        onChange={handleUploadProfileImage}
+                      />
+                    </label>
+                  </div>
                   <FormField
                     className="text-base font-medium text-gray-900 relative z-50"
                     control={form.control}
@@ -103,7 +134,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Username"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border  dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -125,7 +156,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Your Email address"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -147,7 +178,7 @@ export default function ProfileForm() {
                           <Input
                             placeholder="Your Name.."
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
                         <FormDescription>Your full name.</FormDescription>
@@ -168,7 +199,7 @@ export default function ProfileForm() {
                             type="password"
                             placeholder="********"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
                         {/* <FormDescription>
@@ -187,16 +218,16 @@ export default function ProfileForm() {
                       <FormItem>
                         <FormLabel>Gender</FormLabel>
                         <FormDescription>Choose your gender.</FormDescription>
-                        <Select
+                        <Select 
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="flex h-10 w-full rounded-3xl border dark:border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50">
+                            <SelectTrigger className=" rounded-xl bg-slate-200 dark:bg-gray-900">
                               <SelectValue placeholder="Gender" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="z-50 bg-white dark:bg-slate-700 dark:text-slate-300   flex rounded-md border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 ">
+                          <SelectContent className="rounded-xl bg-slate-200 dark:bg-gray-900">
                             <SelectItem
                               value="Male"
                               className="cursor-pointer border-b-2 "
@@ -223,8 +254,8 @@ export default function ProfileForm() {
                       </FormItem>
                     )}
                   />
-                  <p class="text-sm text-gray-500 sm:mt-0">
-                    Already have an account?
+                  <p class="text-sm text-black dark:text-gray-500 sm:mt-0">
+                    Already have an account? &nbsp;
                     <Link href="/login" className="text-gray-400 underline">
                       Log in
                     </Link>
@@ -233,7 +264,7 @@ export default function ProfileForm() {
                 </div>
                 <button
                   type="submit"
-                  className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-gray-700 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-slate-800"
                 >
                   Get started
                 </button>
