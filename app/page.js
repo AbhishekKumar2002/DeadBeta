@@ -9,6 +9,7 @@ import HeroSection from "./(components)/landing/HeroSection";
 import { checkout } from "../checkout"
 import Price from "./(components)/price-comparison/page";
 import ProfileForm from "./(components)/signup/page";
+import './button.css';
 import { useCallback, useEffect, useState } from "react";
 // import Particles from "react-tsparticles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
@@ -24,7 +25,7 @@ import { motion } from "framer-motion";
 export default function Home() {
   const { theme } = useTheme();
   const [forceAnimation, setForceAnimation] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   // triggered once
   useEffect(() => {
     setForceAnimation(true);
@@ -38,7 +39,7 @@ export default function Home() {
         <Card_Home />
         <Faq />
         <AnimatedTooltipPreview />
-        <button  onClick={(() => {
+        <button  className={`animated-button ${isHovered ? 'hovered' : ''}`}onClick={(() => {
               checkout({
                 lineItems: [
                   {
