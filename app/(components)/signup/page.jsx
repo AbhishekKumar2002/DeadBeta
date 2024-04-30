@@ -298,8 +298,9 @@ export default function ProfileForm() {
                       Get started
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <InputOTP maxLength={6}>
+                  <DialogContent className="rounded-3xl bg-slate-300 dark:bg-transparent flex flex-col items-center sm:max-w-[425px]">
+                    <DialogTitle>Enter the OTP send to your mail</DialogTitle>
+                    <InputOTP className="" maxLength={6}>
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />
@@ -312,6 +313,9 @@ export default function ProfileForm() {
                         <InputOTPSlot index={5} />
                       </InputOTPGroup>
                     </InputOTP>
+                    <DialogFooter>
+                      <Button className="border rounded-md border-black dark:border-white dark:bg-transparent" type="submit">Submit</Button>
+                    </DialogFooter>
                   </DialogContent>
                 </form>
                 <div></div>
