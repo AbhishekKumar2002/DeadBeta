@@ -10,7 +10,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import Earth_new from "./earth1/Earth_new";
 import { ImagesSliderDemo } from "./ImageSliderDemo";
-import { PaySection } from "./Paymentsection";
+
 
 const HeroSection = () => {
   return (
@@ -35,7 +35,7 @@ const HeroSection = () => {
           </Suspense>
           {/* <Environment preset="forest" /> */}
         </Canvas>
-        <PaySection bgcolor={'#e0e7ff'} color={'#4f46e5'} />
+      
       </div>
     </div>
     </div>

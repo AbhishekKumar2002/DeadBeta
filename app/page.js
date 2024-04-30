@@ -9,6 +9,7 @@ import HeroSection from "./(components)/landing/HeroSection";
 import { checkout } from "../checkout"
 import Price from "./(components)/price-comparison/page";
 import ProfileForm from "./(components)/signup/page";
+import './button.css';
 import { useCallback, useEffect, useState } from "react";
 // import Particles from "react-tsparticles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
@@ -24,7 +25,7 @@ import { motion } from "framer-motion";
 export default function Home() {
   const { theme } = useTheme();
   const [forceAnimation, setForceAnimation] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   // triggered once
   useEffect(() => {
     setForceAnimation(true);
@@ -38,7 +39,7 @@ export default function Home() {
         <Card_Home />
         <Faq />
         <AnimatedTooltipPreview />
-        <button onClick={(() => {
+        <button  className={`animated-button ${isHovered ? 'hovered' : ''}`}onClick={(() => {
               checkout({
                 lineItems: [
                   {
@@ -47,12 +48,19 @@ export default function Home() {
                   }
                 ]
               })
+<<<<<<< HEAD
             })}>BUY!</button>
       <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
 <script src="https://mediafiles.botpress.cloud/70c286e8-498a-424d-972e-074cb686db9c/webchat/config.js" defer></script>
+=======
+            })}>PAY AND RIDE</button>
+       <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+    <script src="https://mediafiles.botpress.cloud/9da1583c-9e9c-45ff-908c-dd21beee74d1/webchat/config.js" defer></script>
+>>>>>>> 4ce9e762979c607f320a3a2ca0b1b75715516e51
       </div>
       {/* <Card_Home/>
       <AnimatedTooltipPreview/> */}
     </main>
   );
 }
+
