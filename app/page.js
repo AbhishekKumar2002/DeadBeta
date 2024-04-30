@@ -39,7 +39,7 @@ export default function Home() {
         <Card_Home />
         <Faq />
         <AnimatedTooltipPreview />
-        <button  className={`animated-button ${isHovered ? 'hovered' : ''}`}onClick={(() => {
+        <button  onClick={(() => {
               checkout({
                 lineItems: [
                   {

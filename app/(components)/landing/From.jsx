@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { checkout } from "../../../checkout"
 import {
   Dialog,
   DialogClose,
@@ -149,6 +150,18 @@ const From = () => {
                   >
                     Add your card
                   </button>
+                </DialogTrigger>
+                <DialogTrigger asChild>
+                <button type="button"  className="w-full inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50" onClick={(() => {
+              checkout({
+                lineItems: [
+                  {
+                    price: "price_1PAq13SBpUnk9vRLe24PUBpO",
+                    quantity: 1
+                  }
+                ]
+              })
+            })}>PAY AND RIDE</button>
                 </DialogTrigger>
                 <DialogContent className="bg-white dark:bg-black dark:text-white border-none space-y-4">
                   <DialogHeader>
