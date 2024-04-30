@@ -17,6 +17,7 @@ export default async function Event({ params: { username } }) {
       username,
     },
     select: {
+      id: true,
       name: true,
       username: true,
       email: true,

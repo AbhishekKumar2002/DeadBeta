@@ -26,10 +26,7 @@ const From = () => {
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateChange = (datestring) => {
-    // console.log(datestring);
     setSelectedDate(datestring);
-    // const [date,time] = getTimeAndDate(datestring)
-    // console.log({ date, time })
   };
   const [input, setInput] = useState("");
   const [toinput, tosetInput] = useState("");
@@ -56,6 +53,10 @@ const From = () => {
       ) {
         toast.error("Add all the field");
         return;
+      }
+      if(selectedDate < new Date()){
+        toast.error(`Please check your date and time.\n Current DateTime: ${new Date()}`)
+        return
       }
       setLoading(true);
       const res = await fetch("/api/addtravel", {
@@ -159,8 +160,8 @@ const From = () => {
                     <DialogDescription>
                       From: {input} <br />
                       To: {toinput} <br />
-                      Date: { } <br />
-                      Time: { } <br />
+                      Date: { getTimeAndDate(selectedDate)[0] } <br />
+                      Time: { getTimeAndDate(selectedDate)[1] } <br />
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter className="gap-2">
