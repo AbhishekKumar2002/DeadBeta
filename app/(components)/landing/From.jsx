@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 import {
   Dialog,
   DialogClose,
@@ -154,6 +155,8 @@ const From = () => {
                     Add your card
                   </button>
                 </DialogTrigger>
+              
+              
                 <DialogContent className="bg-white dark:bg-black dark:text-white border-none space-y-4">
                   <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>

@@ -10,6 +10,10 @@ import { checkout } from "../checkout";
 import Price from "./(components)/price-comparison/page";
 import ProfileForm from "./(components)/signup/page";
 import "./button.css";
+
+import Price from "./(components)/price-comparison/page";
+import ProfileForm from "./(components)/signup/page";
+
 import { useCallback, useEffect, useState } from "react";
 // import Particles from "react-tsparticles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
@@ -39,6 +43,14 @@ export default function Home() {
         <Faq />
         <AnimatedTooltipPreview />
       </div>
+
+        <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+        <script
+          src="https://mediafiles.botpress.cloud/70c286e8-498a-424d-972e-074cb686db9c/webchat/config.js"
+          defer
+        ></script>
+      {/* <Card_Home/>
+      <AnimatedTooltipPreview/> */}
     </main>
   );
 }
