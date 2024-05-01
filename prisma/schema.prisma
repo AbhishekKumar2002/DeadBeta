@@ -16,7 +16,7 @@ model users {
   gender     String
   created    DateTime @default(now())
   updated    DateTime @updatedAt
-  userimg    String
+  userimg    String?
   otp        Int
   isVerified Boolean
   travelist  travel[]
@@ -26,13 +26,13 @@ model users {
 model rating {
   id       Int    @id @default(autoincrement())
   feedback String
-  users    users  @relation(fields: [usersId], references: [id])
+  users    users  @relation(fields: [usersId], references: [id], onDelete: Cascade) // cascade
   usersId  Int    @unique
 }
 
 model travel {
   id       Int      @id @default(autoincrement())
-  users    users?   @relation(fields: [usersId], references: [id])
+  users    users?   @relation(fields: [usersId], references: [id], onDelete: Cascade)
   usersId  Int?
   from     String
   to       String
