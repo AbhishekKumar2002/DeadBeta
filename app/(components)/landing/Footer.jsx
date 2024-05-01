@@ -29,7 +29,7 @@ const Footer = () => {
                   className="h-32 w-48"
                 />
                 <span className="ml-14 mt-[-18px] text-lg font-bold">
-                  DeadBeta
+                  LiveBeta
                 </span>
               </div>
               <div>

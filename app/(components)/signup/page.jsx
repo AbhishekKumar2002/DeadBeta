@@ -68,6 +68,7 @@ const formSchema = z.object({
 export default function ProfileForm() {
   const router = useRouter();
   const [userImage, setUserImage] = useState(loginSignUp);
+  const [open, setOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -105,9 +106,10 @@ export default function ProfileForm() {
     });
 
     if (response.ok) {
+      setOpen(true);
       toast.dismiss(loadingToastId);
       toast.success("Account Created Successfully😊");
-      router.push("/login");
+      // router.push("/login");
     } else {
       toast.dismiss(loadingToastId);
       toast.error(
@@ -118,7 +120,7 @@ export default function ProfileForm() {
   }
   return (
     <section className="dark:bg-gray-900 bg-slate-200 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
             <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md border pl-8 pr-8 pt-8 pb-8 rounded-2xl bg-slate-400 dark:bg-slate-950">
@@ -290,14 +292,22 @@ export default function ProfileForm() {
                       .
                     </p>
                   </div>
-                  <DialogTrigger asChild>
-                    <Button
-                      type="submit"
-                      className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-gray-700 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-slate-800"
-                    >
-                      Get started
-                    </Button>
-                  </DialogTrigger>
+                  
+                    
+                      <Button
+                        type="submit"
+                        className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-gray-700 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-slate-800"
+                      >
+                        Get started
+                      </Button>
+                    
+
+                    {open && (
+                      <DialogTrigger asChild>
+                    </DialogTrigger>
+                    )} 
+                  
+
                   <DialogContent className="rounded-3xl bg-slate-300 dark:bg-transparent flex flex-col items-center sm:max-w-[425px]">
                     <DialogTitle>Enter the OTP send to your mail</DialogTitle>
                     <InputOTP className="" maxLength={6}>
@@ -314,7 +324,12 @@ export default function ProfileForm() {
                       </InputOTPGroup>
                     </InputOTP>
                     <DialogFooter>
-                      <Button className="border rounded-md border-black dark:border-white dark:bg-transparent" type="submit">Submit</Button>
+                      <Button
+                        className="border rounded-md border-black dark:border-white dark:bg-transparent"
+                        type="submit"
+                      >
+                        Submit
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </form>

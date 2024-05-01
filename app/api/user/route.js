@@ -28,7 +28,7 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    console.log(body);
+    // console.log(body);
     const { username, email, password, name, gender,userimg } = formSchema.parse(body);
 
     const exuserbyemail = await db.users.findUnique({

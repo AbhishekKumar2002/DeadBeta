@@ -17,7 +17,7 @@ export function MacbookScrollDemo() {
           // </Link>
         }
         // src={"https://wallpapercave.com/wp/wp7908642.jpg"}
-        src = {"/images/giphy.gif"}
+        src = {"/images/car1.gif"}
         showGradient={false}
       />
     </div>

@@ -7,7 +7,11 @@ const nextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
-    domains: ["wallpapercave.com", "media.gettyimages.com",],
+    domains: [
+      "wallpapercave.com",
+      "media.gettyimages.com",
+      "lh5.googleusercontent.com",
+    ],
   },
 };
 
