@@ -13,6 +13,8 @@ export async function POST(req) {
     }),
     email: z.string().email({
       message: "Please enter a valid email address.",
+    }).refine(email => email.endsWith("@iiitl.ac.in"), {
+      message: "Email domain must be @iiitl.ac.in",
     }),
     name: z.string().min(3, {
       message: "Name must be at least 3 characters.",
@@ -20,11 +22,8 @@ export async function POST(req) {
     password: z.string().min(6, {
       message: "Password must be at least 6 characters.",
     }),
-    gender: z.string().min(0, {
-      message: "",
-    }),
-    userimg: z.string().min(0, {
-      message: "",
+    gender: z.string().min(1, {
+      message: "Please Select your Gender",
     }),
   });
 

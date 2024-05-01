@@ -1,69 +1,55 @@
 "use client";
-
-import Image from "next/image";
-import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import Image from "next/image";
 import { getTimeAndDate } from "@/lib/parseDateTime";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
-export default function Card({
-  cardId,
-  name,
+export default async function Card({
+  id,
+  usersId,
   from,
   to,
-  usersId,
   date,
   username,
-  email,
-  gender,
-  currentUsername,
-  requested,
+  name,
   friends,
+  currentUsername,
 }) {
   const [bookingDate, bookingTime] = getTimeAndDate(date);
+  const [refetch, setRefetch] = useState(false);
 
-  const requestedSet = new Set();
-  if (requested && requested.length > 0) {
-    requested.map(({ cardId, username }) => requestedSet.add([cardId,username].toString()));
-  }
-  async function handleSendTravelRequest() {
-    const res = await fetch("/api/sendtravelrequest", {
+  // console.log({id})
+  async function handleAcceptRequest() {
+    const res = await fetch("/api/acceptrequest", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        cardId,
-        email,
-        username,
-        currentUsername,
+        cardId: id,
+        userId: usersId,
+        username: currentUsername
       }),
     });
     if (res.ok) {
-      toast.success("Requested");
+      toast.success("Accepted");
+      let timer = setTimeout(() => {
+        window.close();
+      }, 2000);
+      return () => clearTimeout(timer);
     } else {
       toast.error("Oops! Something went wrong");
     }
   }
-  const friendMap = new Map();
+  const friendSet = new Set();
   if (friends && friends.length > 0) {
-    for (let i = 0; i < friends.length; ++i) {
-      const travelId = friends[i].travelId;
-      const friendId = friends[i].friendId;
-
-      // Check if the travelId exists in the map
-      if (!friendMap.has(travelId)) {
-        // If not, initialize it as an empty array
-        friendMap.set(travelId, []);
-      }
-
-      // Push the friendId to the array corresponding to the travelId
-      friendMap.get(travelId).push(friendId);
-    }
+    friends.map(({ friendId, username }) => friendSet.add([friendId,username].toString()));
   }
+  console.log({friendSet})
   return (
-    <CardContainer className="inter-var">
+    <CardContainer className="inter-var mt-12 mb-12 p-4">
       <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
         <CardItem className="w-full mt-1">
           <Image
@@ -80,9 +66,6 @@ export default function Card({
           <Link href={`/user/${username}`}>
             <CardItem className="text-xl font-bold text-neutral-600 dark:text-white">
               {username === currentUsername ? "You" : username}
-              {
-                friendMap.has(cardId) && <span> + {friendMap.get(cardId).length}</span>
-              }
             </CardItem>
           </Link>
           <CardItem
@@ -99,25 +82,21 @@ export default function Card({
           <CardItem
             as="button"
             className={`px-4 py-2 rounded-xl text-xs bg-gray-300 dark:text-black w-full hover:bg-gray-400 ${
-              (username === currentUsername || requestedSet.has([cardId,currentUsername].toString())) &&
+              !friendSet.has([usersId,currentUsername].toString()) &&
               "opacity-50 hover:opacity-50 hover:bg-gray-300 cursor-not-allowed"
             }`}
-            disabled={username === currentUsername || requestedSet.has([cardId,currentUsername].toString())}
-            onClick={handleSendTravelRequest}
+            onClick={handleAcceptRequest}
+            // disabled={friendSet.has([usersId,currentUsername].toString())}
           >
-            {requestedSet.has([cardId,currentUsername].toString()) ? "Requested" : "Request"}
-          </CardItem>
-          <CardItem
-            as="button"
-            className="px-4 py-2 rounded-xl bg-blue-500/40 text-black dark:text-white text-xs w-full hover:bg-blue-500/70"
-          >
-            Chat
+            {/* {friendSet.has([usersId,currentUsername].toString()) ? "Accepted 😊" : "Accept 🤔"} */}
+            Accept
           </CardItem>
           <CardItem
             as="button"
             className="px-4 py-2 rounded-xl bg-red-500/40 text-black dark:text-white text-xs w-full hover:bg-red-500/70"
+            onClick={() => window.close()}
           >
-            Remove
+            Decline
           </CardItem>
         </div>
       </CardBody>

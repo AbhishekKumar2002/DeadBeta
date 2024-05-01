@@ -8,34 +8,60 @@ datasource db {
 }
 
 model users {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  name       String
-  username   String   @unique
-  password   String
-  gender     String
-  created    DateTime @default(now())
-  updated    DateTime @updatedAt
-  userimg    String?
-  otp        Int
-  isVerified Boolean
-  travelist  travel[]
-  rating     rating?
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  username     String         @unique
+  password     String
+  gender       String
+  created      DateTime       @default(now())
+  updated      DateTime       @updatedAt
+  userimg      String?
+  otp          Int
+  isVerified   Boolean
+  travelist    travel[]
+  rating       rating?
+  notification notification[]
+  requested    requested[]
+}
+
+model requested {
+  id      Int    @id @default(autoincrement())
+  users   users? @relation(fields: [usersId], references: [id], onDelete: Cascade)
+  usersId Int?
+  cardId  Int
+  username String //
+}
+
+model notification {
+  id       Int    @id @default(autoincrement())
+  users    users? @relation(fields: [usersId], references: [id], onDelete: Cascade)
+  usersId  Int?
+  travelId Int
 }
 
 model rating {
   id       Int    @id @default(autoincrement())
   feedback String
-  users    users  @relation(fields: [usersId], references: [id], onDelete: Cascade) // cascade
+  users    users  @relation(fields: [usersId], references: [id], onDelete: Cascade)
   usersId  Int    @unique
 }
 
 model travel {
-  id       Int      @id @default(autoincrement())
-  users    users?   @relation(fields: [usersId], references: [id], onDelete: Cascade)
+  id       Int       @id @default(autoincrement())
+  users    users?    @relation(fields: [usersId], references: [id], onDelete: Cascade)
   usersId  Int?
   from     String
   to       String
   date     DateTime
-  onlyDate DateTime @db.Date
+  onlyDate DateTime  @db.Date
+  friends  friends[]
+}
+
+model friends {
+  id       Int     @id @default(autoincrement())
+  travel   travel? @relation(fields: [travelId], references: [id], onDelete: Cascade)
+  travelId Int?
+  friendId Int
+  username String //
 }

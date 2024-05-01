@@ -69,7 +69,6 @@ const formSchema = z.object({
   }),
 });
 
-
 export default function ProfileForm() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -84,7 +83,7 @@ export default function ProfileForm() {
       name: "",
       password: "",
       gender: "",
-      userimg: loginSignUp,
+      userimg: "",
     },
   });
 
@@ -107,26 +106,24 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: userImage,
+        userimg: "kitish",
       }),
     });
 
     if (response.ok) {
       setOpen(true);
       toast.dismiss(loadingToastId);
+      toast.success("OTP Sent");
     } else {
       toast.dismiss(loadingToastId);
-      const { message } = await response.json()
-      toast.error(
-        message
-      );
+      const { message } = await response.json();
+      toast.error(message);
       console.error("Registration Failed");
     }
   }
 
   async function handleVerifyOTP() {
     try {
-      toast.success("OTP Sent")
       const res = await fetch("/api/verifyotp", {
         method: "POST",
         headers: {
@@ -138,8 +135,8 @@ export default function ProfileForm() {
         }),
       });
       if (res.ok) {
-        toast.success("Account Created Successfully😊");
         router.push("/login");
+        toast.success("Account Created Successfully😊");
       } else {
         toast.error("Wrong OTP");
       }

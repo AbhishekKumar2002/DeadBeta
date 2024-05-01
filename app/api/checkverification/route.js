@@ -11,19 +11,20 @@ export async function POST(req) {
       where: { email: body?.email },
     });
 
+    console.log({ exuserbyun, exuserbyemail })
     if(exuserbyemail && exuserbyemail.isVerified === false){
         return NextResponse.json({
             message: "Unverified"
         }, {
-            status: 401
+            status: 400
         })
-    }
 
+    }
     if(exuserbyun && exuserbyun.isVerified === false){
         return NextResponse.json({
             message: "Unverified"
         }, {
-            status: 401
+            status: 400
         })
     }
 

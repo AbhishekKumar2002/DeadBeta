@@ -3,6 +3,8 @@ import Card from "./Card";
 import PagenationPage from "./PagenationPage";
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export default async function Event({ params: { address } }) {
   const location = address.split("%26");
@@ -24,6 +26,7 @@ export default async function Event({ params: { address } }) {
       onlyDate: date
     },
     select: {
+      id: true,
       from: true,
       to: true,
       usersId: true,
@@ -34,20 +37,25 @@ export default async function Event({ params: { address } }) {
           email: true,
           name: true,
           gender: true,
+          requested: true
         },
       },
+      friends: true
     },
   });
 
-  const user = data.map(({ from, to, usersId, date, users }) => ({
+  const user = data.map(({ id, from, to, usersId, date, users, friends }) => ({
+    id,
     from,
     to,
     usersId,
     date,
     ...users,
+    friends
   }));
 
-  console.log(user);
+  const session = await getServerSession(authOptions)
+  const currentUsername = session?.user?.username
   if (user.length <= 0) {
     return (
       <div className="flex flex-col justify-center items-center gap-2 mb-5 min-h-screen">
@@ -72,11 +80,12 @@ export default async function Event({ params: { address } }) {
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {user.map(
           (
-            { name, from, to, usersId, date, username, email, gender },
+            { id,name, from, to, usersId, date, username, email, gender, requested, friends },
             index
           ) => (
             <Card
               key={index}
+              cardId={id}
               name={name}
               from={from}
               to={to}
@@ -85,6 +94,9 @@ export default async function Event({ params: { address } }) {
               username={username}
               email={email}
               gender={gender}
+              currentUsername={currentUsername}
+              requested={requested}
+              friends={friends}
             />
           )
         )}

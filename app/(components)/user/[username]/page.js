@@ -45,7 +45,6 @@ export default async function Event({ params: { username } }) {
       },
     ],
   });
-  console.log(user);
 
   return (
     <>

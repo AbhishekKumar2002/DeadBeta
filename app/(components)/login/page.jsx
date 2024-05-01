@@ -52,7 +52,7 @@ export default function SignInForm() {
       },
       body: JSON.stringify({
         username: form.getValues("username"),
-        email: form.getValues("email"),
+        email: form.getValues("username"),
       }),
     });
 
