@@ -1,6 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Card from "./Card";
 
 export default async function Travel({ params: { id } }) {
@@ -10,7 +10,7 @@ export default async function Travel({ params: { id } }) {
   }
   const card = await db.travel.findUnique({
     where: {
-        id: parseInt(id)
+        id: 1
     },
     select: {
         id: true,
@@ -27,6 +27,7 @@ export default async function Travel({ params: { id } }) {
         friends: true
     }
   })
+  if(!card) notFound()
   const currentUsername = session?.user?.username
   return <Card id={card.id} usersId={card.usersId} from={card.from} to={card.to} date={card.date} username={card.users.username} name={card.users.name} friends={card.friends} currentUsername={currentUsername} />
 }
