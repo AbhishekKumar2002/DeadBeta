@@ -19,8 +19,6 @@ export default async function Card({
 }) {
   const [bookingDate, bookingTime] = getTimeAndDate(date);
   const [refetch, setRefetch] = useState(false);
-
-  // console.log({id})
   async function handleAcceptRequest() {
     const res = await fetch("/api/acceptrequest", {
       method: "POST",

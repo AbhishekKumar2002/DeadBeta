@@ -1,9 +1,10 @@
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     const { cardId, userId, username } = await req.json();
-    console.log({ cardId, userId });
+    // console.log({ cardId, userId });
 
     const res = await db.friends.create({
       data: {
