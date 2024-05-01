@@ -107,7 +107,7 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: "kitish",
+        userimg: userImage,
       }),
     });
 
@@ -126,6 +126,7 @@ export default function ProfileForm() {
 
   async function handleVerifyOTP() {
     try {
+      toast.success("OTP Sent")
       const res = await fetch("/api/verifyotp", {
         method: "POST",
         headers: {
