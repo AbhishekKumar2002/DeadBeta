@@ -2,6 +2,8 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { random } from "glowing-engine";
+import nodemailer from 'nodemailer'
 
 export async function POST(req) {
   const formSchema = z.object({
@@ -28,15 +30,15 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    // console.log(body);
-    const { username, email, password, name, gender,userimg } = formSchema.parse(body);
+    const { username, email, password, name, gender, userimg } =
+      formSchema.parse(body);
 
     const exuserbyemail = await db.users.findUnique({
       where: { email: email },
     });
-    if (exuserbyemail) {
+    if (exuserbyemail && exuserbyemail.isVerified) {
       return NextResponse.json(
-        { user: null, message: "Email already exists" },
+        { message: "Email already exists" },
         { status: 409 }
       );
     }
@@ -44,32 +46,62 @@ export async function POST(req) {
     const exuserbyun = await db.users.findUnique({
       where: { username: username },
     });
-    if (exuserbyun) {
+    if (exuserbyun && exuserbyun.isVerified) {
       return NextResponse.json(
-        { user: null, message: "User already exists" },
+        { message: "username already exists" },
         { status: 409 }
       );
     }
 
     const haspass = await hash(password, 10);
 
-    const newUser = await db.users.create({
-      data: {
-        username,
-        email,
-        password: haspass,
-        name,
-        gender,
-        userimg,
-      },
-    });
-     
-    return NextResponse.json(
-      { user: newUser, message: "Registration Successful" },
-      { status: 201 }
-    );
+    const otp = random.randomNumberInRange(100000, 999999);
+    if(exuserbyemail || exuserbyun){
+      await db.users.update({
+        where: {
+          email
+        },
+        data: {
+          otp
+        }
+      })
+    }else{
+      const newUser = await db.users.create({
+        data: {
+          username,
+          email,
+          password: haspass,
+          name,
+          gender,
+          userimg,
+          otp,
+          isVerified: false,
+        },
+      });
+    }
+    try {
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.SMTP_MAIL,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      });
+      const mail = {
+        from: "Live Beta <deadbeta062@gmail.com>",
+        to: email,
+        subject: "Confirm your Live Beta account",
+        html: `<p>Please use the following One Time Password(OTP) to verify your live beta account.<h2>${otp}</h2><br />Thankyou ! 😊<br /> <a href="https://dead-beta.vercel.app/">Live Beta</a></p>`,
+      };
+      const res = await transporter.sendMail(mail);
+      return Response.json(res);
+    } catch (error) {
+      return Response.json({ error });
+    }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(
       { message: "Registration UnSuccessful" },
       { status: 420 }

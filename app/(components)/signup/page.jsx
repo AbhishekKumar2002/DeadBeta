@@ -45,6 +45,8 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useSession } from "next-auth/react";
+import Loading from "@/app/loading";
 
 const formSchema = z.object({
   username: z.string().regex(/^[a-zA-Z0-9_.]{3,}$/, {
@@ -53,6 +55,8 @@ const formSchema = z.object({
   }),
   email: z.string().email({
     message: "Please enter a valid email address.",
+  }).refine(email => email.endsWith("@iiitl.ac.in"), {
+    message: "Email domain must be @iiitl.ac.in",
   }),
   name: z.string().min(3, {
     message: "Name must be at least 3 characters.",
@@ -65,10 +69,13 @@ const formSchema = z.object({
   }),
 });
 
+
 export default function ProfileForm() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [userImage, setUserImage] = useState(loginSignUp);
   const [open, setOpen] = useState(false);
+  const [otp, setOtp] = useState("");
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,7 +94,6 @@ export default function ProfileForm() {
   };
 
   async function onSubmit(values) {
-    console.log("abhishek");
     const loadingToastId = toast.loading("Creating Account");
 
     const response = await fetch("/api/user", {
@@ -101,22 +107,52 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: userImage,
+        userimg: "kitish",
       }),
     });
 
     if (response.ok) {
       setOpen(true);
       toast.dismiss(loadingToastId);
-      toast.success("Account Created Successfully😊");
-      // router.push("/login");
     } else {
       toast.dismiss(loadingToastId);
+      const { message } = await response.json()
       toast.error(
-        "Sign-UP failed. Please check your credentials and try again."
+        message
       );
       console.error("Registration Failed");
     }
+  }
+
+  async function handleVerifyOTP() {
+    try {
+      toast.success("OTP Sent")
+      const res = await fetch("/api/verifyotp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.getValues("email"),
+          otp,
+        }),
+      });
+      if (res.ok) {
+        toast.success("Account Created Successfully😊");
+        router.push("/login");
+      } else {
+        toast.error("Wrong OTP");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (status === "loading") {
+    return <Loading />;
+  } else if (status === "authenticated") {
+    router.replace("/");
+    return <></>;
   }
   return (
     <section className="dark:bg-gray-900 bg-slate-200 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
@@ -227,7 +263,7 @@ export default function ProfileForm() {
                           <FormControl>
                             <Input
                               type="password"
-                              placeholder="********"
+                              placeholder="******"
                               {...field}
                               className="rounded-xl bg-slate-200"
                             />
@@ -292,25 +328,24 @@ export default function ProfileForm() {
                       .
                     </p>
                   </div>
-                  
-                    
-                      <Button
-                        type="submit"
-                        className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-gray-700 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-slate-800"
-                      >
-                        Get started
-                      </Button>
-                    
 
-                    {open && (
-                      <DialogTrigger asChild>
-                    </DialogTrigger>
-                    )} 
-                  
+                  <Button
+                    type="submit"
+                    className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-gray-700 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-slate-800"
+                  >
+                    Get started
+                  </Button>
+
+                  {open && <DialogTrigger asChild></DialogTrigger>}
 
                   <DialogContent className="rounded-3xl bg-slate-300 dark:bg-transparent flex flex-col items-center sm:max-w-[425px]">
                     <DialogTitle>Enter the OTP send to your mail</DialogTitle>
-                    <InputOTP className="" maxLength={6}>
+                    <InputOTP
+                      className=""
+                      maxLength={6}
+                      value={otp}
+                      onChange={(otp) => setOtp(otp)}
+                    >
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />
@@ -327,6 +362,7 @@ export default function ProfileForm() {
                       <Button
                         className="border rounded-md border-black dark:border-white dark:bg-transparent"
                         type="submit"
+                        onClick={handleVerifyOTP}
                       >
                         Submit
                       </Button>

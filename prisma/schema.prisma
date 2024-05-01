@@ -8,32 +8,34 @@ datasource db {
 }
 
 model users {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String
-  username String   @unique
-  password String
-  gender   String
-  created  DateTime @default(now())
-  updated  DateTime @updatedAt
-  userimg  String
-  travelist travel[]
-  rating    rating?
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  username   String   @unique
+  password   String
+  gender     String
+  created    DateTime @default(now())
+  updated    DateTime @updatedAt
+  userimg    String
+  otp        Int
+  isVerified Boolean
+  travelist  travel[]
+  rating     rating?
 }
 
 model rating {
-  id      Int   @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   feedback String
-  users   users @relation(fields: [usersId], references: [id])
-  usersId Int   @unique
+  users    users  @relation(fields: [usersId], references: [id])
+  usersId  Int    @unique
 }
 
 model travel {
-  id      Int      @id @default(autoincrement())
-  users   users?   @relation(fields: [usersId], references: [id])
-  usersId Int?
-  from    String
-  to      String
-  date    DateTime
+  id       Int      @id @default(autoincrement())
+  users    users?   @relation(fields: [usersId], references: [id])
+  usersId  Int?
+  from     String
+  to       String
+  date     DateTime
   onlyDate DateTime @db.Date
 }
