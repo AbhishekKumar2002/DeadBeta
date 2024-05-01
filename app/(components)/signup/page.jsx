@@ -107,7 +107,7 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: "kitish",
+        userimg: userImage,
       }),
     });
 
