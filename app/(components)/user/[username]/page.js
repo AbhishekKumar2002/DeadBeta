@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import Image from "next/image";
+import loginsign from "../../../../public/images/login-animation.gif";
 
 export const revalidate = 5;
 export default async function Event({ params: { username } }) {
@@ -51,7 +52,7 @@ export default async function Event({ params: { username } }) {
       <div className="flex flex-col sm:flex-row mt-28 justify-evenly items-center mb-2">
         <div className="flex flex-col justify justify-center items-center">
           <Image
-            src="/images/itachi.jpg"
+            src={user.userimg ? user.userimg : loginsign}
             width={200}
             height={200}
             className="h-[20rem] w-[20rem] rounded-2xl"
@@ -124,6 +125,7 @@ export default async function Event({ params: { username } }) {
           </div>
         </div>
       </div>
+
       <div className="bg-slate-200 dark:bg-slate-900 pb-4 relative">
         <div className="h-16">
           <h1 className="text-4xl font-bold z-10 bg-white/75 dark:bg-black/75 w-full p-4">
