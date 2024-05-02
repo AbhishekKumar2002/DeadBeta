@@ -156,22 +156,7 @@ export default function SignInForm() {
                 </button>
               </form>
               <div></div>
-              <button
-                type="button"
-                className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                onClick={() => {
-                  checkout({
-                    lineItems: [
-                      {
-                        price: "price_1PAq13SBpUnk9vRLe24PUBpO",
-                        quantity: 1,
-                      },
-                    ],
-                  });
-                }}
-              >
-                PAY AND RIDE
-              </button>
+              
               <div></div>
               {/* <div className="mt-3 space-y-3">
                 <button
