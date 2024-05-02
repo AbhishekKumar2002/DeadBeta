@@ -9,9 +9,12 @@ export default async function Travel({ params: { id } }) {
   if (!session) {
     redirect("/login");
   }
+  const x = id.split('%26')
+  const cardId = x.at(0).split('%20').join(" ")
+  const senderId = x.at(1).split("%20").join(" ")
   const card = await db.travel.findUnique({
     where: {
-        id: parseInt(id)
+        id: parseInt(cardId)
     },
     select: {
         id: true,
@@ -30,5 +33,5 @@ export default async function Travel({ params: { id } }) {
   })
   if(!card) notFound()
   const currentUsername = session?.user?.username
-  return <Card id={card.id} usersId={card.usersId} from={card.from} to={card.to} date={card.date} username={card.users.username} name={card.users.name} friends={card.friends} currentUsername={currentUsername} />
+  return <Card id={card.id} usersId={card.usersId} from={card.from} to={card.to} date={card.date} username={card.users.username} name={card.users.name} friends={card.friends} currentUsername={currentUsername} senderId={senderId} />
 }

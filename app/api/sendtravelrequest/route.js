@@ -15,7 +15,6 @@ export async function POST(req) {
   try {
     const environment = process.env.NODE_ENV
     const { cardId, email, username, currentUsername } = await req.json();
-    console.log({ environment });
 
     const card = await db.travel.findUnique({
       where: {
@@ -44,7 +43,15 @@ export async function POST(req) {
         }
     })
 
-    const url = (environment === "development" || environment === "test") ? `http://localhost:3000/travel/${cardId}` : `https://dead-beta.vercel.app/travel/${cardId}`
+    const senderId = await db.users.findUnique({ 
+      where: {
+        username: currentUsername
+      },
+      select: {
+        id: true
+      }
+    })
+    const url = (environment === "development" || environment === "test") ? `http://localhost:3000/travel/${cardId}&${senderId.id}` : `https://dead-beta.vercel.app/travel/${cardId}&${senderId.id}`
     const mail = {
         from: "Live Beta <deadbeta062@gmail.com>",
         to: email,

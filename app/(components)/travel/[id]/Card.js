@@ -16,6 +16,7 @@ export default async function Card({
   name,
   friends,
   currentUsername,
+  senderId
 }) {
   const [bookingDate, bookingTime] = getTimeAndDate(date);
   const [refetch, setRefetch] = useState(false);
@@ -27,8 +28,7 @@ export default async function Card({
       },
       body: JSON.stringify({
         cardId: id,
-        userId: usersId,
-        username: currentUsername
+        userId: parseInt(senderId)
       }),
     });
     if (res.ok) {
@@ -43,9 +43,8 @@ export default async function Card({
   }
   const friendSet = new Set();
   if (friends && friends.length > 0) {
-    friends.map(({ friendId, username }) => friendSet.add([friendId,username].toString()));
+    friends.map(({ travelId, friendId }) => friendSet.add([travelId,friendId].toString()));
   }
-  console.log({friendSet})
   return (
     <CardContainer className="inter-var mt-12 mb-12 p-4">
       <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
@@ -80,14 +79,13 @@ export default async function Card({
           <CardItem
             as="button"
             className={`px-4 py-2 rounded-xl text-xs bg-gray-300 dark:text-black w-full hover:bg-gray-400 ${
-              !friendSet.has([usersId,currentUsername].toString()) &&
+              friendSet.has([id,parseInt(senderId)].toString()) &&
               "opacity-50 hover:opacity-50 hover:bg-gray-300 cursor-not-allowed"
             }`}
             onClick={handleAcceptRequest}
-            // disabled={friendSet.has([usersId,currentUsername].toString())}
+            disabled={friendSet.has([id,parseInt(senderId)].toString())}
           >
-            {/* {friendSet.has([usersId,currentUsername].toString()) ? "Accepted 😊" : "Accept 🤔"} */}
-            Accept
+            {friendSet.has([id,parseInt(senderId)].toString()) ? "Accepted 😊" : "Accept 🤔"}
           </CardItem>
           <CardItem
             as="button"

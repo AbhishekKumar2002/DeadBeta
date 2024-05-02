@@ -63,5 +63,4 @@ model friends {
   travel   travel? @relation(fields: [travelId], references: [id], onDelete: Cascade)
   travelId Int?
   friendId Int
-  username String //
 }
