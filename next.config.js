@@ -16,6 +16,11 @@ const nextConfig = {
       },
     ],
     domains: ["wallpapercave.com", "media.gettyimages.com","res.cloudinary.com","lh3.googleusercontent.com"],
+    domains: [
+      "wallpapercave.com",
+      "media.gettyimages.com",
+      "lh5.googleusercontent.com",
+    ],
   },
 };
 

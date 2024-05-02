@@ -44,8 +44,8 @@ export async function GET(req){
 
 export async function PUT(req){
     try {
-        const { username, feedback } = await req.json()
-        const res = await updateRatingData(username,feedback)
+        const data = await req.json()
+        const res = await updateRatingData(data.users.username,data.feedback)
         return NextResponse.json({
             message: "Updated",
         },{

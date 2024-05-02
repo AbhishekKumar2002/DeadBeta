@@ -3,8 +3,8 @@ import { addTravelData } from "./addtraveldata";
 
 export async function POST(req){
     try {
-        const { username, from, to, date } = await req.json()
-        const res = await addTravelData(username,from,to,date)
+        const { username, from, to, date, onlyDate } = await req.json()
+        const res = await addTravelData(username,from,to,date,onlyDate)
         return NextResponse.json({
             message: "added"
         },{

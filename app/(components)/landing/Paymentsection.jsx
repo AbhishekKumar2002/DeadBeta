@@ -25,8 +25,7 @@ export const PaySection = ({bgcolor, color}) => {
     
         const data = await fetch('./api/razorpay', { method: 'POST' }).then((t) => 
             t.json()
-        )
-        console.log(data)
+    )
         var options = {
             "key": "rzp_test_27SMES6jogHj1J", 
             "amount": "50000", 

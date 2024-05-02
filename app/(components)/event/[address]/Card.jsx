@@ -1,7 +1,12 @@
 "use client";
+
 import Image from "next/image";
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import { getTimeAndDate } from "@/lib/parseDateTime";
+import Link from "next/link";
+import toast from "react-hot-toast";
+
 import {
   Dialog,
   DialogClose,
@@ -17,6 +22,7 @@ import {
 import Chat from "./Chat";
 
 export default function Card({
+  cardId,
   name,
   from,
   to,
@@ -25,63 +31,191 @@ export default function Card({
   username,
   email,
   gender,
+  currentUsername,
+  requested,
+  friends,
 }) {
-  return (
+  const [bookingDate, bookingTime] = getTimeAndDate(date);
+
+  const requestedSet = new Set();
+  if (requested && requested.length > 0) {
+    requested.map(({ cardId, username }) => requestedSet.add([cardId,username].toString()));
+  }
+  async function handleSendTravelRequest() {
+    const res = await fetch("/api/sendtravelrequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cardId,
+        email,
+        username,
+        currentUsername,
+      }),
+    });
+    if (res.ok) {
+      toast.success("Requested");
+    } else {
+      toast.error("Oops! Something went wrong");
+    }
+  }
+  const friendMap = new Map();
+  if (friends && friends.length > 0) {
+    for (let i = 0; i < friends.length; ++i) {
+      const travelId = friends[i].travelId;
+      const friendId = friends[i].friendId;
+
+      // Check if the travelId exists in the map
+      if (!friendMap.has(travelId)) {
+        // If not, initialize it as an empty array
+        friendMap.set(travelId, []);
+      }
+
+      // Push the friendId to the array corresponding to the travelId
+      friendMap.get(travelId).push(friendId);
+    }
+  }
+
+
+// export default function Card({
+//   name,
+//   from,
+//   to,
+//   usersId,
+//   date,
+//   username,
+//   email,
+//   gender,
+// }) {
+//   return (
+    // <Dialog>
+    //   <CardContainer className="inter-var">
+    //     <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
+    //       <CardItem className="w-full mt-1">
+    //         <Image
+    //           alt={name}
+    //           src={
+    //             "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    //           }
+    //           height="1000"
+    //           width="1000"
+    //           className="h-60 w-full object-cover rounded-xl"
+    //         />
+    //       </CardItem>
+    //       <div className="mt-2 mb-2">
+    //         <CardItem className="text-xl font-bold text-neutral-600 dark:text-white">
+    //           {name}
+    //         </CardItem>
+    //         <CardItem
+    //           as="div"
+    //           className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300 bg-red flex flex-col w-full"
+    //         >
+    //           <p>From: {from}</p>
+    //           <p>To: {to}</p>
+    //           {/* <p>Date: {date}</p>
+    //           <p>Time: {time}</p> */}
+    //         </CardItem>
+    //       </div>
+    //       <div className="flex justify-between items-center gap-4 font-bold">
+    //         <CardItem
+    //           as="button"
+    //           className="px-4 py-2 rounded-xl text-xs bg-gray-300 dark:text-black w-full hover:bg-gray-400"
+    //         >
+    //           Request
+    //         </CardItem>
+    //         <DialogTrigger asChild>
+    //           <CardItem
+    //             as="button"
+    //             className="px-4 py-2 rounded-xl bg-blue-500/40 text-black dark:text-white text-xs w-full hover:bg-blue-500/70"
+    //           >
+    //             Chat
+    //           </CardItem>
+    //         </DialogTrigger>
+    //         <CardItem
+    //           as="button"
+    //           className="px-4 py-2 rounded-xl bg-red-500/40 text-black dark:text-white text-xs w-full hover:bg-red-500/70"
+    //         >
+    //           Remove
+    //         </CardItem>
+    //       </div>
+    //     </CardBody>
+    //   </CardContainer>
+    //   <DialogContent>
+    //     <Chat usersId={usersId} name={name} />
+    //   </DialogContent>
+    // </Dialog>
+
+   return(
     <Dialog>
-      <CardContainer className="inter-var">
-        <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
-          <CardItem className="w-full mt-1">
-            <Image
-              alt={name}
-              src={
-                "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
-              height="1000"
-              width="1000"
-              className="h-60 w-full object-cover rounded-xl"
-            />
-          </CardItem>
-          <div className="mt-2 mb-2">
+    <CardContainer className="inter-var">
+      <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-[100%] sm:w-[25rem] h-auto rounded-xl p-6 border ">
+        <CardItem className="w-full mt-1">
+          <Image
+            alt={name}
+            src={
+              "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            }
+            height="1000"
+            width="1000"
+            className="h-60 w-full object-cover rounded-xl"
+          />
+        </CardItem>
+        <div className="mt-2 mb-2">
+          <Link href={`/user/${username}`}>
             <CardItem className="text-xl font-bold text-neutral-600 dark:text-white">
-              {name}
+              {username === currentUsername ? "You" : username}
+              {
+                friendMap.has(cardId) && <span> + {friendMap.get(cardId).length}</span>
+              }
             </CardItem>
-            <CardItem
-              as="div"
-              className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300 bg-red flex flex-col w-full"
-            >
-              <p>From: {from}</p>
-              <p>To: {to}</p>
-              {/* <p>Date: {date}</p>
-              <p>Time: {time}</p> */}
-            </CardItem>
-          </div>
-          <div className="flex justify-between items-center gap-4 font-bold">
-            <CardItem
+          </Link>
+          <CardItem
+            as="div"
+            className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300 bg-red flex flex-col w-full"
+          >
+            <p>From: {from}</p>
+            <p>To: {to}</p>
+            <p>Date: {bookingDate}</p>
+            <p>Time: {bookingTime}</p>
+          </CardItem>
+        </div>
+        <div className="flex justify-between items-center gap-4 font-bold">
+          <CardItem
+            as="button"
+            className={`px-4 py-2 rounded-xl text-xs bg-gray-300 dark:text-black w-full hover:bg-gray-400 ${
+              (username === currentUsername || requestedSet.has([cardId,currentUsername].toString())) &&
+              "opacity-50 hover:opacity-50 hover:bg-gray-300 cursor-not-allowed"
+            }`}
+            // disabled={username === currentUsername || requestedSet.has([cardId,currentUsername].toString())}
+            onClick={handleSendTravelRequest}
+          >
+            {requestedSet.has([cardId,currentUsername].toString()) ? "Requested" : "Request"}
+          </CardItem>
+                   <DialogTrigger asChild>
+             <CardItem
               as="button"
-              className="px-4 py-2 rounded-xl text-xs bg-gray-300 dark:text-black w-full hover:bg-gray-400"
-            >
-              Request
-            </CardItem>
-            <DialogTrigger asChild>
-              <CardItem
-                as="button"
-                className="px-4 py-2 rounded-xl bg-blue-500/40 text-black dark:text-white text-xs w-full hover:bg-blue-500/70"
+            className="px-4 py-2 rounded-xl bg-blue-500/40 text-black dark:text-white text-xs w-full hover:bg-blue-500/70"
               >
-                Chat
-              </CardItem>
-            </DialogTrigger>
-            <CardItem
-              as="button"
-              className="px-4 py-2 rounded-xl bg-red-500/40 text-black dark:text-white text-xs w-full hover:bg-red-500/70"
-            >
-              Remove
+             Chat
             </CardItem>
-          </div>
-        </CardBody>
-      </CardContainer>
-      <DialogContent>
-        <Chat usersId={usersId} name={name} />
+          </DialogTrigger>
+          <CardItem
+            as="button"
+            className="px-4 py-2 rounded-xl bg-red-500/40 text-black dark:text-white text-xs w-full hover:bg-red-500/70"
+          >
+            Remove
+          </CardItem>
+        </div>
+      </CardBody>
+    </CardContainer>
+
+
+
+       <DialogContent>
+         <Chat usersId={usersId} name={name} />
       </DialogContent>
+
     </Dialog>
   );
 }

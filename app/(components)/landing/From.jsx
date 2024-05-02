@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 import {
   Dialog,
   DialogClose,
@@ -19,16 +20,15 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { getTimeAndDate } from "@/lib/parseDateTime";
 
 const From = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
   const handleDateChange = (datestring) => {
-    console.log(datestring);
     setSelectedDate(datestring);
   };
-
   const [input, setInput] = useState("");
   const [toinput, tosetInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -55,6 +55,10 @@ const From = () => {
         toast.error("Add all the field");
         return;
       }
+      if(selectedDate < new Date()){
+        toast.error(`Please check your date and time.\n Current DateTime: ${new Date()}`)
+        return
+      }
       setLoading(true);
       const res = await fetch("/api/addtravel", {
         method: "POST",
@@ -63,9 +67,10 @@ const From = () => {
         },
         body: JSON.stringify({
           username,
-          from: input,
-          to: toinput,
+          from: input.trim().toLowerCase(),
+          to: toinput.trim().toLowerCase(),
           date: selectedDate,
+          onlyDate: getTimeAndDate(selectedDate)[0]
         }),
       });
       if (res.ok) {
@@ -129,7 +134,7 @@ const From = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
               <div className="w-full">
-                <Link href={`/event/${input}&${toinput}&${selectedDate}`}>
+                <Link href={`/event/${input.trim().toLowerCase()}&${toinput.trim().toLowerCase()}&${getTimeAndDate(selectedDate)[0]}`}>
                   <button
                     type="button"
                     className="relative inline-flex h-12 overflow-hidden rounded-full p-[3px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 w-full"
@@ -150,12 +155,16 @@ const From = () => {
                     Add your card
                   </button>
                 </DialogTrigger>
+              
+              
                 <DialogContent className="bg-white dark:bg-black dark:text-white border-none space-y-4">
                   <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription>
                       From: {input} <br />
                       To: {toinput} <br />
+                      Date: { getTimeAndDate(selectedDate)[0] } <br />
+                      Time: { getTimeAndDate(selectedDate)[1] } <br />
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter className="gap-2">

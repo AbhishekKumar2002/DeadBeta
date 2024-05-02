@@ -4,7 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import toast, { Toaster } from "react-hot-toast";
+import { checkout } from "../../../checkout";
 
 import {
   Form,
@@ -16,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -29,6 +32,7 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,25 +43,54 @@ export default function SignInForm() {
   });
 
   async function onSubmit(values) {
-    const signInData = await signIn("credentials", {
-      username: values.username,
-      password: values.password,
-      redirect: false,
+    const loadingToastId = toast.loading("Signing in...");
+    // isverified check
+    const res = await fetch("/api/checkverification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: form.getValues("username"),
+        email: form.getValues("username"),
+      }),
     });
-    console.log(signInData);
 
-    if (signInData?.error) {
-      console.log(signInData.error);
+    if (!res.ok) {
+      toast.error("Please Verify your account first");
+      toast.dismiss(loadingToastId)
+      router.push("/signup");
     } else {
-      router.push("../");
+      const signInData = await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        redirect: false,
+      });
+      if (signInData?.error) {
+        console.log(signInData.error);
+        toast.dismiss(loadingToastId);
+        toast.error(
+          "Sign-in failed. Please check your credentials and try again."
+        );
+      } else {
+        toast.dismiss(loadingToastId);
+        toast.success("Logged In Successfully😊");
+        router.push("../");
+      }
     }
   }
+  if (status === "loading") {
+    return <Loading />;
+  } else if (status === "authenticated") {
+    router.replace("/");
+    return <></>;
+  }
   return (
-    <section className="dark:bg-slate-800 bg-slate-300 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
+    <section className="dark:bg-gray-900 bg-slate-200 mt-16 bg-primaryBG dark:bg-secondaryBG dark:text-slate-400">
       <div className="grid grid-cols-1 lg:grid-cols-2 mt-0">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md ">
-            <h2 className="text-3xl font-bold leading-tight  text-white-900 sm:text-4xl">
+          <div className="dark:bg-slate-950 bg-slate-400 xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md border rounded-2xl pl-8 pr-8 pt-8 pb-8">
+            <h2 className="text-3xl font-bold leading-tight  text-white-900 sm:text-4xl text-center">
               Sign In
             </h2>
             <Form {...form}>
@@ -74,7 +107,7 @@ export default function SignInForm() {
                           <Input
                             placeholder="Username"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
 
@@ -95,7 +128,7 @@ export default function SignInForm() {
                             type="password"
                             placeholder="********"
                             {...field}
-                            className="flex h-10 w-full rounded-3xl border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="rounded-xl bg-slate-200"
                           />
                         </FormControl>
 
@@ -104,9 +137,12 @@ export default function SignInForm() {
                     )}
                   />
 
-                  <p class="text-sm text-gray-500 sm:mt-0">
-                    Don't have an account?
-                    <Link href="/signup" className="text-gray-400 underline">
+                  <p class="text-sm dark:text-gray-500 sm:mt-0">
+                    Don't have an account? &nbsp;
+                    <Link
+                      href="/signup"
+                      className="dark:text-gray-400 underline"
+                    >
                       SignUp for free...
                     </Link>
                     .
@@ -114,16 +150,33 @@ export default function SignInForm() {
                 </div>
                 <button
                   type="submit"
-                  className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="relative mt-2 inline-flex w-full items-center justify-center rounded-2xl bg-slate-800 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
                   Sign In
                 </button>
               </form>
               <div></div>
+              <button
+                type="button"
+                className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                onClick={() => {
+                  checkout({
+                    lineItems: [
+                      {
+                        price: "price_1PAq13SBpUnk9vRLe24PUBpO",
+                        quantity: 1,
+                      },
+                    ],
+                  });
+                }}
+              >
+                PAY AND RIDE
+              </button>
+              <div></div>
               <div className="mt-3 space-y-3">
                 <button
                   type="button"
-                  className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+                  className="relative inline-flex w-full items-center justify-center rounded-2xl border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
                 >
                   <span className="mr-2 inline-block">
                     <svg

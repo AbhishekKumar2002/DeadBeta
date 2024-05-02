@@ -5,11 +5,10 @@ import { db } from "@/lib/db";
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const conversationId = searchParams.get("conversationId");
-  console.log({ conversationId });
   try {
     const messages = await db.message.findMany({
       where: {
-        convesationId:conversationId
+        convesationId: conversationId,
       },
       include: {
         sender: true,
@@ -19,7 +18,6 @@ export async function GET(request) {
         createdAt: "asc",
       },
     });
-    console.log(messages);
 
     return NextResponse.json(messages);
   } catch (error) {

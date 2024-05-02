@@ -22,7 +22,6 @@ const Formi = ({ conversationId }) => {
   });
 
   async function onSubmit(values) {
-    console.log(values,conversationId);
        
         const res = await fetch("/api/messages", {
     method: "POST", 

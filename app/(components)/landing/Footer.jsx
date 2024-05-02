@@ -29,13 +29,13 @@ const Footer = () => {
                   className="h-32 w-48"
                 />
                 <span className="ml-14 mt-[-18px] text-lg font-bold">
-                  DeadBeta
+                  Live Beta
                 </span>
               </div>
               <div>
                 <p className="mb-4 text-base font-medium"></p>
                 <p className="text-sm text-gray-600 p-[-2]">
-                  &copy; Copyright 2022. All Rights Reserved by DeadBeta.
+                  &copy; Copyright 2022. All Rights Reserved by Live Beta.
                 </p>
               </div>
             </div>
