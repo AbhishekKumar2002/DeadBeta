@@ -25,6 +25,9 @@ export async function POST(req) {
     gender: z.string().min(1, {
       message: "Please Select your Gender",
     }),
+    userimg: z.string().min(0, {
+      message: "Please Select your image",
+    }),
   });
 
   try {

@@ -67,12 +67,16 @@ const formSchema = z.object({
   gender: z.string().min(1, {
     message: "Please Select your Gender",
   }),
+  userimg: z.string().min(0, {
+    message: "Please Select your image",
+  }),
+
 });
 
 export default function ProfileForm() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [userImage, setUserImage] = useState(loginSignUp);
+  const [userImage, setUserImage] = useState("");
   const [open, setOpen] = useState(false);
   const [otp, setOtp] = useState("");
   const form = useForm({
@@ -87,10 +91,21 @@ export default function ProfileForm() {
     },
   });
 
-  const handleUploadProfileImage = async (e) => {
+  const handleUploadProfileImage = async(e) => {
+
+    // setShowimg(e.target.files[0])
     const data = await ImagetoBase64(e.target.files[0]);
-    setUserImage(data); // Set userImage state with the uploaded image data
-  };
+    // setImg(data)
+    // console.log(data)
+    setUserImage((preve)=>{
+        return{
+            ...preve,
+            userImage : data
+        }
+    })
+    console.log(userImage.userImage);
+
+}
 
   async function onSubmit(values) {
     const loadingToastId = toast.loading("Creating Account");
@@ -106,7 +121,7 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: "kitish",
+        userimg: userImage ? userImage.userImage : (await ImagetoBase64(loginSignUp))
       }),
     });
 
@@ -166,7 +181,7 @@ export default function ProfileForm() {
                   <div className="space-y-5">
                     <div className="w-20 h-20 overflow-hidden rounded-full drop-shadow-md m-auto relative">
                       <Image
-                        src={userImage}
+                        src={userImage ? userImage.userImage : loginSignUp}
                         className="w-full h-full"
                         width={100}
                         height={100}
