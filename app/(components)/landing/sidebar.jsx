@@ -63,10 +63,12 @@ const DropdownMenuDemo = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-gray-700/20" />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+            <Link href={`/user/${session.user.username}`}>
+              <DropdownMenuItem className="cursor-pointer">
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>
                 <CreditCard className="mr-2 h-4 w-4" />
                 <span>Billing</span>
@@ -165,10 +167,10 @@ const DropdownMenuDemo = () => {
                     <span>Email</span>
                   </DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem>
                   <MessageSquare className="mr-2 h-4 w-4" />
                   <span>Google</span>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
