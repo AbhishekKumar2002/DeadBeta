@@ -6,8 +6,16 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
     ],
-    domains: ["wallpapercave.com", "media.gettyimages.com",],
+    domains: ["wallpapercave.com", "media.gettyimages.com","res.cloudinary.com","lh3.googleusercontent.com"],
   },
 };
 
