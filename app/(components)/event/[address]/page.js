@@ -56,6 +56,17 @@ export default async function Event({ params: { address } }) {
 
   const session = await getServerSession(authOptions)
   const currentUsername = session?.user?.username
+  let currentUserId = null
+  if(session){
+    currentUserId = await db.users.findUnique({
+      where: {
+        username: currentUsername
+      },
+      select: {
+        id: true
+      }
+    })
+  }
   if (user.length <= 0) {
     return (
       <div className="flex flex-col justify-center items-center gap-2 mb-5 min-h-screen">
@@ -97,6 +108,7 @@ export default async function Event({ params: { address } }) {
               currentUsername={currentUsername}
               requested={requested}
               friends={friends}
+              currentUserId={currentUserId}
             />
           )
         )}
