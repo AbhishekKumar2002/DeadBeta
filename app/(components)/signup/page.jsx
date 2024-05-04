@@ -94,16 +94,16 @@ export default function ProfileForm() {
   const handleUploadProfileImage = async(e) => {
 
     // setShowimg(e.target.files[0])
-    const data = await ImagetoBase64(e.target.files[0]);
-    // setImg(data)
-    // console.log(data)
-    setUserImage((preve)=>{
-        return{
-            ...preve,
-            userImage : data
-        }
-    })
-    console.log(userImage.userImage);
+    // const data = await ImagetoBase64(e.target.files[0]);
+    // // setImg(data)
+    // // console.log(data)
+    // setUserImage((preve)=>{
+    //     return{
+    //         ...preve,
+    //         userImage : data
+    //     }
+    // })
+    // console.log(userImage.userImage);
 
 }
 
@@ -121,7 +121,7 @@ export default function ProfileForm() {
         email: values.email,
         name: values.name,
         gender: values.gender,
-        userimg: userImage ? userImage.userImage : (await ImagetoBase64(loginSignUp))
+        userimg: "kitish"
       }),
     });
 
