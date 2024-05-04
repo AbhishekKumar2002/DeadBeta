@@ -73,9 +73,9 @@ export default function Card_Home() {
       const data = (await res.json()).res;
       if (data) {
         const reviews = data.map((item) => ({
-          title: item.users.name,
-          description: item.feedback,
-          link: `/user/${item.users.username}`,
+          title: item?.users?.name,
+          description: item?.feedback,
+          link: `/user/${item?.users?.username}`,
         }));
         setFeedback(reviews);
         setRefresh(false);
