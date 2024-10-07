@@ -2,26 +2,28 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-
-
 export async function POST(request) {
   try {
-
-    const { email, usersId: userId,isGroup, members, name } = await request.json();
+    const {
+      email,
+      usersId: userId,
+      cardId,
+      isGroup,
+      members,
+      name,
+    } = await request.json();
     // console.log({ email, userId})
 
     // const { userId,  } = body;
 
     const currentUser = await db.users.findUnique({
-        where: {
-            email
-        },
-       
-    })
+      where: {
+        email,
+      },
+    });
 
-    console.log(currentUser.id
-                            ,userId );
-  
+    console.log(currentUser);
+
     if (!currentUser?.id || !currentUser?.email) {
       return new NextResponse("Unauthorised", { status: 401 });
     }
@@ -56,16 +58,15 @@ export async function POST(request) {
 
     const existingConversations = await db.conversation.findMany({
       where: {
-        OR: [
-          { usersIds: { equals: [currentUser.id, userId] } },
-
-          { usersIds: { equals: [userId, currentUser.id] } },
-        ],
+        travelId: {
+          equals: cardId, 
+        }
+    
       },
     });
 
     const singleConversation = existingConversations[0];
-     console.log(existingConversations[0])
+    console.log("after",existingConversations[0]);
     if (singleConversation) {
       return NextResponse.json(singleConversation);
     }
@@ -82,6 +83,7 @@ export async function POST(request) {
             },
           ],
         },
+        travelId:cardId,
       },
       include: {
         users: true,
@@ -90,8 +92,7 @@ export async function POST(request) {
 
     return NextResponse.json(newConversation);
   } catch (error) {
-
-      console.log(error)
+    console.log(error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

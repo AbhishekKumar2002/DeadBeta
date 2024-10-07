@@ -5,8 +5,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import Image from "next/image";
-import loginsign from "../../../../public/images/login-animation.gif";
+import kitish from '@/public/team/kitish.jpg'
+import ayush from '@/public/team/ayush.jpg'
+import { random } from "glowing-engine";
 
+const images = [kitish,ayush]
 export const revalidate = 5;
 export default async function Event({ params: { username } }) {
   const session = await getServerSession(authOptions);
@@ -52,7 +55,7 @@ export default async function Event({ params: { username } }) {
       <div className="flex flex-col sm:flex-row mt-28 justify-evenly items-center mb-2">
         <div className="flex flex-col justify justify-center items-center">
           <Image
-            src={user.userimg ? user.userimg : loginsign}
+            src={random.randomPickFromArray(images)}
             width={200}
             height={200}
             className="h-[20rem] w-[20rem] rounded-2xl"

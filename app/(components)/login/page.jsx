@@ -180,9 +180,9 @@ export default function SignInForm() {
           </div>
         </div>
 
-        <div className="object-cover h-full w-full">
+        <div className="flex items-center justify-center h-full w-full mt-[-4]">
           <img
-            className="mx-auto object-cover h-full w-full rounded-2xl "
+            className="mx-auto object-cover h-[80%] w-[80%] rounded-2xl "
             src="https://images.unsplash.com/photo-1630673245362-f69d2b93880e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
           />
         </div>

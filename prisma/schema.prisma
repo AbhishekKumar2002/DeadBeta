@@ -82,6 +82,8 @@ model Conversation {
   messages      Message[]
   usersIds      String[]  @db.ObjectId
   users         users[]   @relation(fields: [usersIds], references: [id])
+  travelId      String  @db.ObjectId
+
 }
 
 model Message {
@@ -114,4 +116,5 @@ model travel {
   date     DateTime
   onlyDate DateTime  @db.Date
   friends  friends[]
+ 
 }

@@ -56,7 +56,7 @@ export async function POST(req) {
         from: "Live Beta <deadbeta062@gmail.com>",
         to: email,
         subject: "🎉 You've got a new travel request",
-        html: `<p>Hello, <strong>${currentUsername}</strong> has sent you a travel request. <h2>From: ${card.from}</h2> <h2>To: ${card.to}</h2> <h2>Date: ${card.date}</h2> <br /> <a href=${url}>View It</a> Thankyou ! 🎉<br /> <a href="https://icy-indulgence.vercel.app/">Live Beta</a></p>`,
+        html: `<p>Hello, <strong>${currentUsername}</strong> has sent you a travel request. <h2>From: ${card.from}</h2> <h2>To: ${card.to}</h2> <h2>Date: ${card.date}</h2> <br /> <a href=${url}>View It</a> Thankyou ! 🎉<br /> <a href="https://dead-beta.vercel.app/">Live Beta</a></p>`,
     }
     const res = await transporter.sendMail(mail)
     return Response.json({ res });

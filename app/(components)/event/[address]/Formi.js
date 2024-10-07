@@ -34,7 +34,9 @@ const Formi = ({ conversationId }) => {
   })
 
 
-  //  Form.reset();
+  if(res.ok){
+    form.reset()
+  }
 
   }
 

@@ -29,8 +29,8 @@ const Message = ({ conversationId }) => {
     pusherClient.subscribe(conversationId);
 
     bottomRef?.current?.scrollIntoView();
-    console.log("from pusher")
-    
+    console.log("from pusher");
+
     const messageHandler = (message) => {
       setMessages((current) => {
         if (find(current, { id: message.id })) {
@@ -63,7 +63,7 @@ const Message = ({ conversationId }) => {
         />
       ))}
 
-      <div ref={bottomRef} className="pt-12" />
+      <div ref={bottomRef} className="pt-[234px]" />
     </div>
   );
 };

@@ -7,7 +7,7 @@ import Message from "./Message";
 
 import { useSession } from "next-auth/react";
 
-const Chat = async ({ usersId,name }) => {
+const Chat = async ({ usersId,name,cardId }) => {
   const { data: session, status } = useSession();
 
   const [conversationId, setConversation] = useState("");
@@ -22,11 +22,14 @@ const Chat = async ({ usersId,name }) => {
         body: JSON.stringify({
           email: session?.user?.email,
           usersId,
+          cardId
         }),
       });
 
       const conver = await res.json();
       setConversation(conver.id);
+
+      console.log(conver.id)
     }
     fn();
   }, []);

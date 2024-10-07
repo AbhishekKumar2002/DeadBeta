@@ -36,7 +36,7 @@ export default function Card({
   currentUsername,
   requested,
   friends,
-  currentUserId
+  currentUserId,
 }) {
   const [bookingDate, bookingTime] = getTimeAndDate(date);
   const { data: session, status } = useSession();
@@ -48,10 +48,10 @@ export default function Card({
     );
   }
   async function handleSendTravelRequest() {
-    if(status === "unauthenticated"){
-      toast.error('Please login first')
+    if (status === "unauthenticated") {
+      toast.error("Please login first");
       router.push("/login");
-      return
+      return;
     }
     const res = await fetch("/api/sendtravelrequest", {
       method: "POST",
@@ -136,7 +136,9 @@ export default function Card({
               onClick={handleSendTravelRequest}
             >
               {requestedSet.has([cardId, currentUsername].toString())
-                ? friendMap.get(cardId)?.includes(currentUserId.id) ? "Paired 🎉" : "Requested"
+                ? friendMap.get(cardId)?.includes(currentUserId.id)
+                  ? "Paired 🎉"
+                  : "Requested"
                 : "Request"}
             </CardItem>
             <DialogTrigger asChild>
@@ -155,25 +157,23 @@ export default function Card({
             </CardItem>
           </div>
 
-          <Link href="https://buy.stripe.com/test_28o5migjZ2ue5j28wy" className="mt-7">
-      <button
-        type="button"
-        className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-zinc-800 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-      >
-        PAY AND RIDE
-      </button>
-      </Link>
+          <Link
+            href="https://buy.stripe.com/test_28o5migjZ2ue5j28wy"
+            className="mt-7"
+            target="_blank"
+          >
+            <button
+              type="button"
+              className="relative mt-2 inline-flex w-full items-center justify-center rounded-md bg-zinc-800 px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+            >
+              PAY AND RIDE
+            </button>
+          </Link>
         </CardBody>
-      
-
-
-
-
       </CardContainer>
-  
 
       <DialogContent>
-        <Chat usersId={usersId} name={name} />
+        <Chat usersId={usersId} name={name} cardId={cardId} />
       </DialogContent>
     </Dialog>
   );
