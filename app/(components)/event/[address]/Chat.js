@@ -4,55 +4,64 @@ import Image from "next/image";
 import Formi from "./Formi";
 import Header from "./Header";
 import Message from "./Message";
-
 import { useSession } from "next-auth/react";
 
-const Chat = async ({ usersId,name,cardId }) => {
+const Chat = ({ usersId, name, cardId }) => {
   const { data: session, status } = useSession();
 
   const [conversationId, setConversation] = useState("");
   const [messa, setMessa] = useState([]);
+
+  // Fetch conversationId
   useEffect(() => {
-    async function fn() {
-      const res = await fetch("/api/conversations", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          email: session?.user?.email,
-          usersId,
-          cardId
-        }),
-      });
+    async function fetchConversation() {
+      if (!session) return;
 
-      const conver = await res.json();
-      setConversation(conver.id);
+      try {
+        const res = await fetch("/api/conversations", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email: session?.user?.email,
+            usersId,
+            cardId,
+          }),
+        });
 
-      console.log(conver.id)
+        const conver = await res.json();
+        setConversation(conver.id); // Set conversationId
+        console.log(conver.id);
+      } catch (error) {
+        console.error("Failed to fetch conversation", error);
+      }
     }
-    fn();
-  }, []);
+    fetchConversation();
+  }, [session, usersId, cardId]);
 
+  // Fetch messages based on conversationId
   useEffect(() => {
-    async function fn() {
-      const result = await fetch(
-        `/api/usermessage?conversationId=${conversationId}`
-      );
+    async function fetchMessages() {
+      if (conversationId.length === 0) return;
 
-      const resul = await result.json();
-
-      setMessa(resul);
+      try {
+        const result = await fetch(
+          `/api/usermessage?conversationId=${conversationId}`
+        );
+        const resul = await result.json();
+        setMessa(resul); // Set messages
+      } catch (error) {
+        console.error("Failed to fetch messages", error);
+      }
     }
-    if (conversationId.length > 0) fn();
+    fetchMessages();
   }, [conversationId]);
-
 
   return (
     <div className="h-fit w-full">
-      {/* <div>{messa?.map((message) => message.body)}</div> */}
-      <Header name={name} />
-      <Message  conversationId={conversationId}/>
+      <Header name={cardId} />
+      <Message conversationId={conversationId} />
       <Formi conversationId={conversationId} />
     </div>
   );

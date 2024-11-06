@@ -19,7 +19,7 @@ export default function Home() {
         <HeroSection1 />
         <Card_Home />
         <Faq />
-        <AnimatedTooltipPreview />
+        {/* <AnimatedTooltipPreview /> */}
       </div>
 
         <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
