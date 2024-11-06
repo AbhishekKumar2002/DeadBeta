@@ -8,6 +8,7 @@ import Image from "next/image";
 import kitish from '@/public/team/kitish.jpg'
 import ayush from '@/public/team/ayush.jpg'
 import { random } from "glowing-engine";
+import profileImg from "@/public/images/login-animation.gif"
 
 const images = [kitish,ayush]
 export const revalidate = 5;
@@ -55,7 +56,7 @@ export default async function Event({ params: { username } }) {
       <div className="flex flex-col sm:flex-row mt-28 justify-evenly items-center mb-2">
         <div className="flex flex-col justify justify-center items-center">
           <Image
-            src={random.randomPickFromArray(images)}
+            src={profileImg}
             width={200}
             height={200}
             className="h-[20rem] w-[20rem] rounded-2xl"
