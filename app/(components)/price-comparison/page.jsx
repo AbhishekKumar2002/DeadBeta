@@ -9,7 +9,7 @@ import Form from "./Form";
 
 const Slider = () => {
   const [fare, setFare] = useState();
-   const [pickUp, setpickUp] = useState("");
+  const [pickUp, setpickUp] = useState("");
   const [dropLocation, todropLocation] = useState("");
   const [price, setPrice] = useState("");
 
@@ -21,24 +21,20 @@ const Slider = () => {
     todropLocation(value1);
   };
 
-  const  handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(pickUp);
     // console.log(dropLocation);
 
-     const result=await fetch(`/api/fare?pickUp=${pickUp}&dropLocation=${dropLocation}`)
+    const result = await fetch(
+      `/api/fare?pickUp=${pickUp}&dropLocation=${dropLocation}`
+    );
 
+    const res = await result.json();
 
-     const res=await result.json()
-
-     setPrice(res.price.fare)
+    setPrice(res.price.fare);
 
     //  console.log(res.price.fare);
-
-
-
-
-
   };
 
   useEffect(() => {
@@ -98,73 +94,71 @@ const Slider = () => {
     );
   };
 
-
   return (
     <div className="">
       <div class="container mb-28">
-      <div class="slide">
-        <div
-          class="item"
-          style={{
-            backgroundImage:
-              "url(https://www.shutterstock.com/image-photo/wroclaw-poland-aug-25-2020-600nw-2258295659.jpg)",
-          }}
-        >
-          <div class="content">
-            <div class="name">Uber</div>
-            <div class="des"> </div>
-            <button>{price}</button>
+        <div class="slide">
+          <div
+            class="item"
+            style={{
+              backgroundImage:
+                "url(https://www.shutterstock.com/image-photo/wroclaw-poland-aug-25-2020-600nw-2258295659.jpg)",
+            }}
+          >
+            <div class="content">
+              <div class="name">Uber</div>
+              <div class="des"> </div>
+              <button>{price}</button>
+            </div>
           </div>
-        </div>
-        <div
-          class="item"
-          style={{
-            backgroundImage:
-              "url(https://miro.medium.com/v2/resize:fit:2000/format:webp/1*MEpturVAaHNpeaXw691Y1A.jpeg)",
-          }}
-        >
-          {/* <div
+          <div
+            class="item"
+            style={{
+              backgroundImage:
+                "url(https://miro.medium.com/v2/resize:fit:2000/format:webp/1*MEpturVAaHNpeaXw691Y1A.jpeg)",
+            }}
+          >
+            {/* <div
             class="item"
             style={{
               backgroundImage:
                 "url(https://miro.medium.com/v2/resize:fit:2000/format:webp/1*MEpturVAaHNpeaXw691Y1A.jpeg)",
             }}
           ></div> */}
-          <div class="content">
-            <div class="name">Price Prediction</div>
-            <div class="des"></div>
-            {/* <button>{fare}</button> */}
-          </div>
-        </div>
-        <div
-          class="item"
-          style={{
-            backgroundImage:
-              "url(https://www.techzim.co.zw/wp-content/uploads/2023/05/Indrive.png)",
-          }}
-        >
-          <div class="content">
-            <div class="name">Indriver</div>
-            <div class="des">
-              {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum! */}
+            <div class="content">
+              <div class="name">Price Prediction</div>
+              <div class="des"></div>
+              {/* <button>{fare}</button> */}
             </div>
-            <button>{price*0.90}</button>
           </div>
-        </div>
-        <div
-          class="item"
-          style={{
-            backgroundImage:
-              "url(https://startupstorymedia.com/wp-content/uploads/2023/01/Rapido_1-1.jpg)",
-          }}
-        >
-          <div class="content">
-            <div class="name">Rapido</div>
-            {/* <div class="des">{fare + 10}</div> */}
-            <button>{price*0.85}</button>
+          <div
+            class="item"
+            style={{
+              backgroundImage:
+                "url(https://www.techzim.co.zw/wp-content/uploads/2023/05/Indrive.png)",
+            }}
+          >
+            <div class="content">
+              <div class="name">Indriver</div>
+              <div class="des">
+                {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum! */}
+              </div>
+              <button>{price * 0.9}</button>
+            </div>
           </div>
-        </div>
-        {/* <div
+          <div
+            class="item"
+            style={{
+              backgroundImage: "url(rapido.jpg)",
+            }}
+          >
+            <div class="content">
+              <div class="name">Rapido</div>
+              {/* <div class="des">{fare + 10}</div> */}
+              <button>{price * 0.85}</button>
+            </div>
+          </div>
+          {/* <div
           class="item"
           style={{
             backgroundImage:
@@ -177,32 +171,32 @@ const Slider = () => {
             <button>{fare + 37}</button>
           </div>
         </div> */}
-        <div
-          class="item"
-          style={{
-            backgroundImage:
-              "url(https://cdn.neowin.com/news/images/uploaded/2021/03/1615995441_ola-taxi_story.jpg)",
-          }}
-        >
-          <div class="content">
-            <div class="name">OLA</div>
-            {/* <div class="des"></div> */}
-            <button>{price*1.8}</button>
+          <div
+            class="item"
+            style={{
+              backgroundImage:
+                "url(https://cdn.neowin.com/news/images/uploaded/2021/03/1615995441_ola-taxi_story.jpg)",
+            }}
+          >
+            <div class="content">
+              <div class="name">OLA</div>
+              {/* <div class="des"></div> */}
+              <button>{price * 1.8}</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="button">
-        <button class="prev">
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <button class="next">
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
+        <div class="button">
+          <button class="prev">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button class="next">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
       </div>
-    </div>
-          {/* <Form/> */}
-          <div className="mt-20 mb-20">
+      {/* <Form/> */}
+      <div className="mt-20 mb-20">
         <div className="flex flex-col justify items-center max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
           <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
             Search Prices
@@ -210,25 +204,25 @@ const Slider = () => {
 
           <form className="my-8 w-full" onSubmit={handleSubmit}>
             {/* <LabelInputContainer className="mb-4"> */}
-              <Label htmlFor="pickUp">Pick UP Location</Label>
-              <Input
-                id="pickUp"
-                placeholder="Pick UP Location"
-                value={pickUp}
-                onChange={(e) => setpickUp(e.target.value)}
-                type="text"
-              />
+            <Label htmlFor="pickUp">Pick UP Location</Label>
+            <Input
+              id="pickUp"
+              placeholder="Pick UP Location"
+              value={pickUp}
+              onChange={(e) => setpickUp(e.target.value)}
+              type="text"
+            />
             {/* </LabelInputContainer> */}
 
             {/* <LabelInputContainer className="mb-4 w-full"> */}
-              <Label htmlFor="dropLocation">Drop Location</Label>
-              <Input
-                id="dropLocation"
-                value={dropLocation}
-                onChange={(e) => todropLocation(e.target.value)}
-                placeholder="Drop Location"
-                type="text"
-              />
+            <Label htmlFor="dropLocation">Drop Location</Label>
+            <Input
+              id="dropLocation"
+              value={dropLocation}
+              onChange={(e) => todropLocation(e.target.value)}
+              placeholder="Drop Location"
+              type="text"
+            />
             {/* </LabelInputContainer> */}
 
             <button
@@ -245,7 +239,6 @@ const Slider = () => {
       </div>
       {/* <div className="text-white">{price}</div> */}
     </div>
-    
   );
 };
 

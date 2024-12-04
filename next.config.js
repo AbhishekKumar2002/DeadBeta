@@ -14,12 +14,16 @@ const nextConfig = {
         protocol: "https",
         hostname: "upload.wikimedia.org",
       },
+      {
+        protocol: "https",
+        hostname: "imgbb.com",
+      },
     ],
-    domains: ["wallpapercave.com", "media.gettyimages.com","res.cloudinary.com","lh3.googleusercontent.com"],
     domains: [
       "wallpapercave.com",
       "media.gettyimages.com",
-      "lh5.googleusercontent.com",
+      "res.cloudinary.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };
