@@ -11,7 +11,7 @@ export async function GET(req)
       
     try{
         const res = await fetch(
-            `https://persistent-katharyn-abhishekkkkk.koyeb.app/price/?pickup_location=${pick}&dropoff_location=${drop}`
+            `https://uber-api-tww1.onrender.com/price/?pickup_location=${pick}&dropoff_location=${drop}`
         );
         const price = await res.json();
         return NextResponse.json(
