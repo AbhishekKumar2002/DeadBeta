@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Fuse from "fuse.js";
 
 import {
   Dialog,
@@ -26,18 +27,79 @@ const From = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedDate, setSelectedDate] = useState(null);
-  const handleDateChange = (datestring) => {
-    setSelectedDate(datestring);
-  };
   const [input, setInput] = useState("");
-  const [toinput, tosetInput] = useState("");
+  const [toInput, setToInput] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const handleChange = (value) => {
-    setInput(value);
+
+  const fuseOptions = {
+    keys: ["from", "to"],
+    threshold: 0.3,
+  };
+  const [fuse, setFuse] = useState(null); // Initialize Fuse.js
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch("/api/locations");
+        if (!response.ok) throw new Error("Failed to fetch locations");
+
+        const data = await response.json();
+        const formattedData = data.map((item) => ({
+          from: item.from,
+          to: item.to,
+        }));
+
+        setLocations(formattedData);
+        setFuse(new Fuse(formattedData, fuseOptions));
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+        toast.error("Unable to load location data.");
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
-  const tohandleChange = (value1) => {
-    tosetInput(value1);
+  const handleFromChange = (value) => {
+    setInput(value);
+
+    if (fuse) {
+      const results = fuse.search(value);
+      const uniqueSuggestions = [
+        ...new Set(results.map((result) => result.item.from)),
+      ];
+      setFromSuggestions(uniqueSuggestions);
+    }
+  };
+
+  const handleToChange = (value) => {
+    setToInput(value);
+
+    if (fuse) {
+      const results = fuse.search(value);
+
+      const uniqueSuggestions = [
+        ...new Set(results.map((result) => result.item.to)),
+      ];
+      setToSuggestions(uniqueSuggestions);
+    }
+  };
+
+  const selectFromSuggestion = (suggestion) => {
+    setInput(suggestion);
+    setFromSuggestions([]);
+  };
+
+  const selectToSuggestion = (suggestion) => {
+    setToInput(suggestion);
+    setToSuggestions([]);
   };
 
   const handleAddData = async () => {
@@ -45,21 +107,25 @@ const From = () => {
       toast.error("Please login first");
       return router.push("/login");
     }
+
     const username = session.user.username;
+
+    if (
+      input.trim().length === 0 ||
+      toInput.trim().length === 0 ||
+      !selectedDate
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (selectedDate < new Date()) {
+      toast.error("Selected date and time cannot be in the past.");
+      return;
+    }
+
+    setLoading(true);
     try {
-      if (
-        input.trim().length === 0 ||
-        toinput.trim().length === 0 ||
-        !selectedDate
-      ) {
-        toast.error("Add all the field");
-        return;
-      }
-      if(selectedDate < new Date()){
-        toast.error(`Please check your date and time.\n Current DateTime: ${new Date()}`)
-        return
-      }
-      setLoading(true);
       const res = await fetch("/api/addtravel", {
         method: "POST",
         headers: {
@@ -68,23 +134,25 @@ const From = () => {
         body: JSON.stringify({
           username,
           from: input.trim().toLowerCase(),
-          to: toinput.trim().toLowerCase(),
+          to: toInput.trim().toLowerCase(),
           date: selectedDate,
-          onlyDate: getTimeAndDate(selectedDate)[0]
+          onlyDate: getTimeAndDate(selectedDate)[0],
         }),
       });
+
       if (res.ok) {
         toast.success("Successfully Created ✅");
-        setLoading(false);
       } else {
-        toast.error("Already Have ❌");
-        setLoading(false);
+        toast.error("Entry already exists ❌");
       }
-    } catch (err) {
-      toast.error("Something went wrong 😥");
+    } catch (error) {
+      console.error("Error adding data:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
+
   return (
     <Dialog>
       <div id="frto" className="w-[80%] md:mt-0 mt-28">
@@ -103,8 +171,22 @@ const From = () => {
                 placeholder="From"
                 className="w-full mt-2 p-2 border rounded"
                 value={input}
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => handleFromChange(e.target.value)}
+                autoComplete="off"
               />
+              {fromSuggestions.length > 0 && (
+                <ul className="bg-black border mt-2 rounded shadow-md">
+                  {fromSuggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      className="p-2 cursor-pointer hover:bg-gray-400"
+                      onClick={() => selectFromSuggestion(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="flex flex-col mt-4">
@@ -114,27 +196,44 @@ const From = () => {
                 id="to"
                 placeholder="To"
                 className="w-full mt-2 p-2 border rounded"
-                value={toinput}
-                onChange={(e) => tohandleChange(e.target.value)}
+                value={toInput}
+                onChange={(e) => handleToChange(e.target.value)}
+                autoComplete="off"
               />
+              {toSuggestions.length > 0 && (
+                <ul className="bg-black border mt-2 rounded shadow-md">
+                  {toSuggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      className="p-2 cursor-pointer hover:bg-gray-400"
+                      onClick={() => selectToSuggestion(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-            <div className="mt-4">
-              <label htmlFor="dateTime">Date/Time</label>
-              <br />
+            <div className="mt-4 flex-row gap-2">
+              <label htmlFor="dateTime" >Date/Time:</label>
               <DatePicker
                 selected={selectedDate}
                 onChange={handleDateChange}
                 showTimeSelect
                 dateFormat="Pp"
                 placeholderText="Select Date and Time"
-                className="w-full mt-2 p-2 border rounded"
+                className="w-full mt-2 p-2 border rounded ml-2"
               />
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full">
               <div className="w-full">
-                <Link href={`/event/${input.trim().toLowerCase()}&${toinput.trim().toLowerCase()}&${getTimeAndDate(selectedDate)[0]}`}>
+                <Link
+                  href={`/event/${input.trim().toLowerCase()}&${toInput
+                    .trim()
+                    .toLowerCase()}&${getTimeAndDate(selectedDate)?.[0]}`}
+                >
                   <button
                     type="button"
                     className="relative inline-flex h-12 overflow-hidden rounded-full p-[3px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 w-full"
@@ -146,6 +245,7 @@ const From = () => {
                   </button>
                 </Link>
               </div>
+
               <div className="w-full p-4">
                 <DialogTrigger asChild>
                   <button
@@ -155,16 +255,15 @@ const From = () => {
                     Add your card
                   </button>
                 </DialogTrigger>
-              
-              
+
                 <DialogContent className="bg-white dark:bg-black dark:text-white border-none space-y-4">
                   <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription>
                       From: {input} <br />
-                      To: {toinput} <br />
-                      Date: { getTimeAndDate(selectedDate)[0] } <br />
-                      Time: { getTimeAndDate(selectedDate)[1] } <br />
+                      To: {toInput} <br />
+                      Date: {getTimeAndDate(selectedDate)?.[0]} <br />
+                      Time: {getTimeAndDate(selectedDate)?.[1]} <br />
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter className="gap-2">
